@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Xtv.Windows.TraceBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Xtv.Windows"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:TraceViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="100" d:DesignWidth="300">
+    <Grid Background="{Binding BackColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="15" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ToggleButton Grid.RowSpan="2" IsEnabled="{Binding IsExpandable}" IsChecked="{Binding IsExpanded, Mode=TwoWay}" PreviewKeyDown="ExpandButton_PreviewKeyDown" VerticalAlignment="Center" Width="15" Height="15" Margin="5"></ToggleButton>
+            <TextBlock Grid.Column="1" Text="{Binding Call}" FontSize="14"></TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding FileInfo}" FontSize="11" Margin="0,-3,0,0"></TextBlock>
+        </Grid>
+        <StackPanel x:Name="Children" Grid.Row="1" Margin="10,0,0,0" Visibility="{Binding Expanded}"></StackPanel>
+    </Grid>
+</UserControl>

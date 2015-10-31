@@ -1,0 +1,45 @@
+﻿<Window x:Class="Xtv.Windows.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Xtv.Windows"
+        mc:Ignorable="d"
+        Title="About XTV" Height="400" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FF4A4A4A">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="201*"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="AppIcon" Source="Resources/app.ico" Width="64" Height="64" />
+            <Label Grid.Column="1" Margin="20,0,0,0" FontSize="22" Content="{Binding TitleText}" Height="Auto" VerticalAlignment="Center"></Label>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <Label Content="{Binding VersionText}" />
+                <Label Content="{Binding CopyrightText}" />
+                <Label Content="{Binding ProductText}" />
+                <Label Content="{Binding DescriptionText}" />
+                <Label Content="{Binding DisclaimerText}" />
+            </StackPanel>
+            <FlowDocumentScrollViewer Grid.Row="1" Background="White" VerticalScrollBarVisibility="Auto" Document="{Binding AboutText}" />
+            <Button Content="OK" IsDefault="True" IsCancel="True" HorizontalAlignment="Right" Margin="6" Grid.Row="2" Padding="25,5" />
+        </Grid>
+    </Grid>
+</Window>

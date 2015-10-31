@@ -1,0 +1,24 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:Xtv.Windows"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Section FontFamily="Segoe UI">
+        <Paragraph>
+            Feel free to file issues under and submit pull requests at the github page:
+            <Hyperlink NavigateUri="http://github.com/boykathemad/xdebug-trace-viewer">boykathemad/xdebug-trace-viewer</Hyperlink>
+        </Paragraph>
+        <Paragraph>
+            Royalty free window and about icon from:
+            <Hyperlink NavigateUri="http://flaticons.net">FlatIcons.net</Hyperlink>
+        </Paragraph>
+        <Paragraph>
+            Contributors:
+        </Paragraph>
+        <List>
+            <ListItem>
+                <Paragraph>
+                    <Hyperlink NavigateUri="http://github.com/boykathemad">BoykaTheMad</Hyperlink>
+                </Paragraph>
+            </ListItem>
+        </List>
+    </Section>
+</FlowDocument>
