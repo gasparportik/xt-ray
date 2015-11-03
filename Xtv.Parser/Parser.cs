@@ -2,11 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xtv.Parser
 {
@@ -28,6 +25,12 @@ namespace Xtv.Parser
 
         public abstract string GetInfo();
 
+        /// <summary>
+        /// Tries to parse the specified call trace file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="ParserException">Thrown if the specified file has invalid format and therefore can't be parsed</exception>
         public static Parser ParseFile(string file)
         {
             var parser = new FileParser(file);

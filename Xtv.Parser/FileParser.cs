@@ -6,8 +6,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xtv.Parser
 {
@@ -22,9 +20,9 @@ namespace Xtv.Parser
         {
             if (!File.Exists(file))
             {
-                throw new ArgumentException("The specified file does not exist: " + file + "!");
+                throw new IOException("The specified file does not exist: " + file + "!");
             }
-            this._file = file;
+            _file = file;
         }
 
         public void Parse()
@@ -41,13 +39,18 @@ namespace Xtv.Parser
                     ParseData();
                 }
             }
+            else
+            {
+                throw new ParserException("The file has an invalid format! Only computer-readable trace files are supported.");
+            }
         }
 
-
-        void ParseData()
+        private void ParseData()
         {
             _data = new List<Trace>();
             var stack = new Stack<Trace>();
+            Trace root = null;
+            Trace last = null;
             using (var reader = File.OpenText(_file))
             {
                 for (var i = 0; i < _startLine; ++i)
@@ -64,7 +67,7 @@ namespace Xtv.Parser
                         {
                             var lastTrace = stack.Count > 0 ? stack.Peek() : null;
                             var trace = new Trace();
-                            trace.parse(parts);
+                            trace.parse(parts, root, lastTrace);
                             if (lastTrace != null)
                             {
                                 lastTrace.addChild(trace);
@@ -74,16 +77,42 @@ namespace Xtv.Parser
                             {
                                 _data.Add(trace);
                                 stack.Push(trace);
+                                root = trace;
                             }
                         }
                         else if (parts[2] == "1")
                         {
-                            var lastTrace = stack.Count > 0 ? stack.Pop() : null;
-                            if (lastTrace != null)
+                            if (stack.Count > 0)
                             {
-                                lastTrace.MemoryEnd = int.Parse(parts[4]);
-                                lastTrace.TimeEnd = float.Parse(parts[3]);
-                                lastTrace.close();
+                                var lastTrace = stack.Pop();
+                                last = lastTrace;
+                                if (lastTrace.FunctionNumber == short.Parse(parts[1]))
+                                {
+                                    lastTrace.MemoryEnd = int.Parse(parts[4]);
+                                    lastTrace.TimeEnd = float.Parse(parts[3]);
+                                    lastTrace.close();
+                                }
+                                else
+                                {
+                                    lastTrace.close();
+                                }
+                            }
+                        }
+                        else if (parts[2] == "R")
+                        {
+                            if (last != null && last.ReturnValue == null)
+                            {
+                                last.ReturnValue = parts[5];
+                            }
+                        }
+                        else if (parts[2] == "")
+                        {
+                            while (stack.Count > 0)
+                            {
+                                var trace = stack.Pop();
+                                trace.MemoryEnd = int.Parse(parts[4]);
+                                trace.TimeEnd = float.Parse(parts[3]);
+                                trace.close();
                             }
                         }
                     }
@@ -106,7 +135,7 @@ namespace Xtv.Parser
             }
         }
 
-        void Preparse()
+        private void Preparse()
         {
             var lines = (from line in ReadLines() select line).Take(3).ToList();
             if (lines[0].IndexOf("Version: ") == 0)
@@ -133,7 +162,7 @@ namespace Xtv.Parser
             }
         }
 
-        IEnumerable<string> ReadLines()
+        private IEnumerable<string> ReadLines()
         {
             string line;
             using (var reader = File.OpenText(_file))
@@ -145,7 +174,7 @@ namespace Xtv.Parser
             }
         }
 
-        IEnumerable<string> ReadLines(StreamReader reader)
+        private IEnumerable<string> ReadLines(StreamReader reader)
         {
             string line;
 
