@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using System;
+using System.IO;
 using System.Diagnostics;
 using Cout = System.Console;
 
@@ -16,7 +17,7 @@ namespace Xtv.Console
         {
             if (args.Length == 0)
             {
-                Cout.WriteLine(string.Format("Usage: {0} <filename> [-n]", Process.GetCurrentProcess().MainModule.FileName));
+                Cout.WriteLine(string.Format("Usage: {0} <filename> [-n]", Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)));
                 Cout.WriteLine("The dump style arguments (n) are as follows: ");
                 var index = 0;
                 foreach (var style in Enum.GetNames(typeof(Trace.DumpStyle))) {
