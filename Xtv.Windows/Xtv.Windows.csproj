@@ -80,6 +80,12 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="ParamsDialog.xaml.cs">
+      <DependentUpon>ParamsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PercentToHeatConverter.cs" />
+    <Compile Include="BoolToBoldnessConverter.cs" />
     <Compile Include="TraceBox.xaml.cs">
       <DependentUpon>TraceBox.xaml</DependentUpon>
     </Compile>
@@ -104,6 +110,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ParamsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Themes\CustomStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

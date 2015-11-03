@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using Microsoft.Win32;
-using System.Reflection;
+using System;
 using System.Windows;
 
 namespace Xtv.Windows
@@ -32,8 +32,15 @@ namespace Xtv.Windows
             };
             if (fd.ShowDialog(this) ?? false)
             {
-                var parser = Parser.ParseFile(fd.FileName);
-                TraceViewer.Content = new TraceBox(parser.RootTrace);
+                try
+                {
+                    var parser = Parser.ParseFile(fd.FileName);
+                    TraceViewer.Content = new TraceBox(parser.RootTrace) { ProfileInfoVisible = ProfileButton.IsChecked ?? false};
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -42,6 +49,15 @@ namespace Xtv.Windows
             var about = new AboutWindow();
             about.Owner = this;
             about.ShowDialog();
+        }
+
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var rootTrace = TraceViewer.Content as TraceBox;
+            if (rootTrace != null)
+            {
+                rootTrace.ProfileInfoVisible = !rootTrace.ProfileInfoVisible;
+            }
         }
     }
 }

@@ -20,6 +20,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
                     <Button Click="LoadButton_Click" Padding="15,5" Style="{x:Null}">Open File...</Button>
+                    <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
                     <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}">About</Button>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" FlowDirection="RightToLeft">

@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -41,7 +42,23 @@ namespace Xtv.Windows
         {
             get
             {
-                return Trace.Call + (Trace.Parameters.Length > 0 ? "(" + string.Join(", ", Trace.Parameters) + ")" : "");
+                return Trace.Call;
+            }
+        }
+
+        public bool HasParameters
+        {
+            get
+            {
+                return Trace.Parameters.Length > 0;
+            }
+        }
+
+        public string Parameters
+        {
+            get
+            {
+                return Trace.Parameters.Length > 0 ? string.Join(", ", Trace.Parameters) : string.Empty;
             }
         }
 
@@ -74,7 +91,7 @@ namespace Xtv.Windows
                 {
                     foreach (var child in Trace.Children)
                     {
-                        Children.Children.Add(new TraceBox(child));
+                        Children.Children.Add(new TraceBox(child) { ProfileInfoVisible = _profileDataVisible });
                     }
                     _childrenLoaded = true;
                 }
@@ -89,6 +106,66 @@ namespace Xtv.Windows
             get
             {
                 return IsExpandable && IsExpanded ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+        private bool _profileDataVisible = false;
+        public Visibility ProfileInfoVisibility
+        {
+            get
+            {
+                return _profileDataVisible ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public bool ProfileInfoVisible
+        {
+            get
+            {
+                return _profileDataVisible;
+            }
+            set
+            {
+                _profileDataVisible = value;
+                if (_childrenLoaded)
+                {
+                    foreach (TraceBox child in Children.Children)
+                    {
+                        child.ProfileInfoVisible = _profileDataVisible;
+                    }
+                }
+                OnPropertyChanged("ProfileInfoVisibility");
+            }
+        }
+
+        public string TimingInfo
+        {
+            get
+            {
+                return string.Format("{0:0.000}ms / {1:0.000}ms", Trace.SelfTime * 1000, Trace.CumulativeTime * 1000);
+            }
+        }
+
+        public double TotalTimingPercent
+        {
+            get
+            {
+                return Trace.TimePercent;
+            }
+        }
+
+        public double ParentTimingPercent
+        {
+            get
+            {
+                return Trace.ParentTimePercent;
+            }
+        }
+
+        public bool IsUserDefined
+        {
+            get
+            {
+                return Trace.IsUserDefined;
             }
         }
 
@@ -123,6 +200,13 @@ namespace Xtv.Windows
                 IsExpanded = e.Key == Key.Right;
                 e.Handled = true;
             }
+        }
+
+        private void ParamsLabelAction(object sender, MouseButtonEventArgs e)
+        {
+            var dialog = new ParamsDialog(Trace.Parameters);
+            dialog.Owner = Window.GetWindow(this);
+            dialog.ShowDialog();
         }
     }
 }
