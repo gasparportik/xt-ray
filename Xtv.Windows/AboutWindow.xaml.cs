@@ -22,7 +22,7 @@ namespace Xtv.Windows
         public AboutWindow()
         {
             InitializeComponent();
-            AppIcon.Source = BitmapFrame.Create(new Uri(@"pack://application:,,,/Resources/app.ico", UriKind.RelativeOrAbsolute));
+            AppIcon.Source = BitmapFrame.Create(new Uri(@"pack://application:,,,/Resources/app.png", UriKind.RelativeOrAbsolute));
             DataContext = this;
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Xtv.Windows"
         mc:Ignorable="d"
-        Title="About XTV" Height="400" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="About XTV" Height="500" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="Padding" Value="0" />
@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="201*"/>
             </Grid.ColumnDefinitions>
-            <Image x:Name="AppIcon" Source="Resources/app.ico" Width="64" Height="64" />
+            <Image x:Name="AppIcon" Source="Resources/app.png" Width="64" Height="64" Margin="10" />
             <Label Grid.Column="1" Margin="20,0,0,0" FontSize="22" Content="{Binding TitleText}" Height="Auto" VerticalAlignment="Center"></Label>
         </Grid>
         <Grid Grid.Row="1">
