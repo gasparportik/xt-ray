@@ -1,0 +1,6 @@
+﻿#!/bin/bash
+SCRIPTFILE=$(readlink -e $0)
+WORKINGDIR=$(dirname $SCRIPTFILE)
+EXE="$WORKINGDIR/../lib/xtv/xtv.exe"
+
+exec /usr/bin/mono "$EXE" "$@"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.targets" />
+  
+  <Target Name="Releasify" DependsOnTargets="Build">
+    <MSBuild Projects="$(MSBuildProjectDirectory)\..\Xtv.Console\Xtv.Console.csproj" Targets="Build" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Xtv.Console\bin\$(Configuration)\xtv-cli.exe">
+      <Output TaskParameter="Include" ItemName="CliAssemblies" />
+    </CreateItem>
+    <Copy SourceFiles="@(CliAssemblies)" DestinationFolder="$(OutDir)" />
+    <CreateItem Include="$(OutDir)\*.dll;$(OutDir)\xtv.exe;$(OutDir)\xtv-cli.exe;$(OutDir)\xtv.exe.config">
+      <Output TaskParameter="Include" ItemName="PackFiles" />
+    </CreateItem>
+    <Message Text="Files = @(PackFiles)" />
+    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\xtv.exe">
+      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Zip Files="@(PackFiles)" ZipFileName="$(MSBuildProjectDirectory)\..\dist\xtv.win-%(myAssemblyInfo.Version).zip" WorkingDirectory="$(OutDir)\" />
+  </Target>
+ 
+</Project>

@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BoykaTheMad")]
 [assembly: AssemblyProduct("Xtv.GtkSharp.Properties")]
-[assembly: AssemblyCopyright("Copyright ©  2015 BoykaTheMad")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

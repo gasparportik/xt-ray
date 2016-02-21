@@ -10,7 +10,6 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BoykaTheMad")]
 [assembly: AssemblyProduct("Xtv.Windows")]
-[assembly: AssemblyCopyright("Copyright ©  2015 BoykaTheMad")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

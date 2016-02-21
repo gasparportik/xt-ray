@@ -8,7 +8,7 @@ using Gtk;
 namespace Xtv.GtkSharp
 {
     using Parser;
-
+    using System.IO;
     public class MainWindow : GladyWindow
     {
 
@@ -27,7 +27,9 @@ namespace Xtv.GtkSharp
         public MainWindow() : base(WindowType.Toplevel, "MainWindow")
         {
 #if DEBUG
-            ShowTraces(Parser.ParseFile(@"c:\tmp\traces\trace.sample.xt"));
+            if (File.Exists(@"c:\tmp\traces\trace.sample.xt")) {
+                ShowTraces(Parser.ParseFile(@"c:\tmp\traces\trace.sample.xt"));
+            }
 #endif
         }
 

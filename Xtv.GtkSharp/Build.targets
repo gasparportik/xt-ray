@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildProjectDirectory)\..\.build\MSBuild.Community.Tasks.targets" />
+  
+  <ItemGroup>
+    <UnixLibs Include="$(MSBuildProjectDirectory)\lib\*" />
+  </ItemGroup>
+
+  <Target Name="Releasify" DependsOnTargets="Build">
+    <DeleteTree Directories="$(MSBuildProjectDirectory)\package" />
+
+    <MSBuild Projects="$(MSBuildProjectDirectory)\..\Xtv.Console\Xtv.Console.csproj" Targets="Build" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Xtv.Console\bin\$(Configuration)\xtv-cli.exe">
+      <Output TaskParameter="Include" ItemName="CliAssemblies" />
+    </CreateItem>
+    <Copy SourceFiles="@(CliAssemblies)" DestinationFolder="$(OutDir)" />
+    
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\xtv;$(MSBuildProjectDirectory)\xtv-cli" DestinationFolder="$(MSBuildProjectDirectory)\package\bin\" />
+    <CreateItem Include="$(OutDir)\*.dll;$(OutDir)\xtv.exe;$(OutDir)\xtv-cli.exe;$(OutDir)\xtv.exe.config">
+      <Output TaskParameter="Include" ItemName="PackFiles" />
+    </CreateItem>
+    <Copy SourceFiles="@(PackFiles)" DestinationFolder="$(MSBuildProjectDirectory)\package\lib\xtv\" />
+    <Copy SourceFiles="@(UnixLibs)" DestinationFolder="$(MSBuildProjectDirectory)\package\lib\xtv\" />
+    <Message Text="Files = @(PackFiles)" />
+    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\xtv.exe">
+      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Message Text="Version = %(myAssemblyInfo.Version)" />
+    <CreateItem Include="$(MSBuildProjectDirectory)\package\**\*">
+      <Output TaskParameter="Include" ItemName="ZipFiles" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" ZipFileName="$(MSBuildProjectDirectory)\..\dist\xtv.linux-%(myAssemblyInfo.Version).zip" WorkingDirectory="$(MSBuildProjectDirectory)\package" />
+    <DeleteTree Directories="$(MSBuildProjectDirectory)\package" />
+  </Target>
+ 
+</Project>
