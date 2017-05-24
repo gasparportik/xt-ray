@@ -35,7 +35,7 @@ namespace Xtv.GtkSharp
 
         internal static string GetEmbeddedResourceName(string filename)
         {
-            return exe.GetName().Name + "." + filename;
+            return typeof(App).Namespace + "." + filename;
         }
     }
 }

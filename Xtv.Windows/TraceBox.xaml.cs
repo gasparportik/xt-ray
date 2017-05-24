@@ -2,18 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace Xtv.Windows
 {
-    using Parser;
+    using Common;
+    using Common.Abstractions;
 
-    public partial class TraceBox : UserControl, INotifyPropertyChanged
+    public partial class TraceBox : UserControl, ITraceUiNode
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -25,110 +28,62 @@ namespace Xtv.Windows
         public static readonly DependencyProperty TraceProperty = DependencyProperty.Register("Trace", typeof(object), typeof(TraceBox), new UIPropertyMetadata(null, TraceChangedCallback));
 
 
-        public Trace Trace
+        public ITrace Trace
         {
-            get { return (Trace)GetValue(TraceProperty); }
+            get { return (ITrace)GetValue(TraceProperty); }
             set { SetValue(TraceProperty, value); }
         }
 
         private static void TraceChangedCallback(DependencyObject owner, DependencyPropertyChangedEventArgs args)
         {
             var window = (TraceBox)owner;
-            var x = (Trace)args.NewValue;
+            var x = (ITrace)args.NewValue;
         }
         #endregion
 
-        public string Call
-        {
-            get
-            {
-                return Trace.Call;
-            }
-        }
+        public string Call => Trace.Call.Name;
 
-        public bool HasParameters
-        {
-            get
-            {
-                return Trace.Parameters.Length > 0;
-            }
-        }
+        public bool HasParameters => Trace.Parameters != null && Trace.Parameters.Length > 0;
 
         public string Parameters
         {
             get
             {
-                return Trace.Parameters.Length > 0 ? string.Join(", ", Trace.Parameters) : string.Empty;
+                if (Trace.ReferencedFile == null)
+                {
+                    return Trace.Parameters != null && Trace.Parameters.Length > 0 ? string.Join(", ", Trace.Parameters) : string.Empty;
+                }
+                return "'" + Trace.ReferencedFile.Path + "'";
             }
         }
 
-        public string FileInfo
-        {
-            get
-            {
-                return Trace.FileName + " @ L" + Trace.FileLine;
-            }
-        }
+        public string FileInfo => Trace.File.Path + " @ L" + Trace.FileLine;
 
-        public bool IsExpandable
-        {
-            get
-            {
-                return Trace?.Children.Length > 0;
-            }
-        }
-        private bool _childrenLoaded;
+        public bool IsExpandable => Trace.Children.Length > 0;
+
         private bool _isExpanded;
         public bool IsExpanded
         {
-            get
-            {
-                return _isExpanded;
-            }
+            get => _isExpanded;
             set
             {
-                if (value && !_childrenLoaded)
-                {
-                    foreach (var child in Trace.Children)
-                    {
-                        Children.Children.Add(new TraceBox(child) { ProfileInfoVisible = _profileDataVisible });
-                    }
-                    _childrenLoaded = true;
-                }
                 _isExpanded = value;
-                OnPropertyChanged("IsExpanded");
-                OnPropertyChanged("Expanded");
+                OnPropertyChanged(nameof(IsExpanded));
+                OnPropertyChanged(nameof(Expanded));
             }
         }
+        public Visibility Expanded => IsExpandable && IsExpanded ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility Expanded
-        {
-            get
-            {
-                return IsExpandable && IsExpanded ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
         private bool _profileDataVisible = false;
-        public Visibility ProfileInfoVisibility
-        {
-            get
-            {
-                return _profileDataVisible ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
         public bool ProfileInfoVisible
         {
-            get
-            {
-                return _profileDataVisible;
-            }
+            get => _profileDataVisible;
             set
             {
                 _profileDataVisible = value;
-                if (_childrenLoaded)
+                if (ChildrenPanel != null)
                 {
-                    foreach (TraceBox child in Children.Children)
+                    foreach (TraceBox child in ChildrenPanel.Children)
                     {
                         child.ProfileInfoVisible = _profileDataVisible;
                     }
@@ -136,61 +91,60 @@ namespace Xtv.Windows
                 OnPropertyChanged("ProfileInfoVisibility");
             }
         }
+        public Visibility ProfileInfoVisibility => _profileDataVisible ? Visibility.Visible : Visibility.Collapsed;
 
-        public string TimingInfo
-        {
-            get
-            {
-                return string.Format("{0:0.000}ms / {1:0.000}ms", Trace.SelfTime * 1000, Trace.CumulativeTime * 1000);
-            }
-        }
+        public string TimingInfo => string.Format("{0:0.000}ms / {1:0.000}ms", Trace.SelfTime * 1000, Trace.CumulativeTime * 1000);
 
-        public double TotalTimingPercent
-        {
-            get
-            {
-                return Trace.TimePercent;
-            }
-        }
+        public double TotalTimingPercent => Trace.TimePercent;
 
-        public double ParentTimingPercent
-        {
-            get
-            {
-                return Trace.ParentTimePercent;
-            }
-        }
+        public double ParentTimingPercent => Trace.ParentTimePercent;
 
-        public bool IsUserDefined
-        {
-            get
-            {
-                return Trace.IsUserDefined;
-            }
-        }
+        public bool IsUserDefined => Trace.IsUserDefined;
 
-        public Brush BackColor
+        public Brush BackColor => Trace.IsUserDefined ? Brushes.Aquamarine : Brushes.Beige;
+
+        public bool FilterMatched
         {
-            get
+            set
             {
-                if (Trace.IsUserDefined)
+                if (Dispatcher.CheckAccess())
                 {
-                    return Brushes.Aquamarine;
+                    Visibility = value ? Visibility.Visible : Visibility.Collapsed;
                 }
-                return Brushes.Beige;
+                else
+                {
+                    Dispatcher.InvokeAsync(() => { Visibility = value ? Visibility.Visible : Visibility.Collapsed; });
+                }
             }
         }
 
-        public TraceBox()
+        public TraceBox(ITrace trace)
         {
+            Trace = trace;
             InitializeComponent();
             DataContext = this;
             IsExpanded = false;
+
         }
 
-        public TraceBox(Trace trace) : this()
+        public void ShowChildren(IEnumerable<FlexibleTraceNode> traces)
         {
-            Trace = trace;
+            Action action = () => {
+                ChildrenPanel.Children.Clear();
+                foreach (var trace in traces)
+                {
+                    var childNode = new TraceBox(trace.Trace) { ProfileInfoVisible = _profileDataVisible };
+                    trace.UiNode = childNode;
+                    ChildrenPanel.Children.Add(childNode);
+                }
+            };
+            if (ChildrenPanel.Dispatcher.CheckAccess())
+            {
+                action();
+            } else
+            {
+                ChildrenPanel.Dispatcher.Invoke(action);
+            }
         }
 
         private void ExpandButton_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -204,9 +158,49 @@ namespace Xtv.Windows
 
         private void ParamsLabelAction(object sender, MouseButtonEventArgs e)
         {
-            var dialog = new ParamsDialog(Trace.Parameters);
-            dialog.Owner = Window.GetWindow(this);
-            dialog.ShowDialog();
+            if (Trace.ReferencedFile == null)
+            {
+                var dialog = new ParamsDialog(Trace.Parameters)
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                dialog.ShowDialog();
+            }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~TraceBox() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

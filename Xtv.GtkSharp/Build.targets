@@ -8,21 +8,13 @@
 
   <Target Name="Releasify" DependsOnTargets="Build">
     <DeleteTree Directories="$(MSBuildProjectDirectory)\package" />
-
-    <MSBuild Projects="$(MSBuildProjectDirectory)\..\Xtv.Console\Xtv.Console.csproj" Targets="Build" />
-    <CreateItem Include="$(MSBuildProjectDirectory)\..\Xtv.Console\bin\$(Configuration)\xtv-cli.exe">
-      <Output TaskParameter="Include" ItemName="CliAssemblies" />
-    </CreateItem>
-    <Copy SourceFiles="@(CliAssemblies)" DestinationFolder="$(OutDir)" />
-    
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\xtv;$(MSBuildProjectDirectory)\xtv-cli" DestinationFolder="$(MSBuildProjectDirectory)\package\bin\" />
-    <CreateItem Include="$(OutDir)\*.dll;$(OutDir)\xtv.exe;$(OutDir)\xtv-cli.exe;$(OutDir)\xtv.exe.config">
+    <CreateItem Include="$(OutDir)\*.dll;$(OutDir)\xtray-gui.exe;$(OutDir)\xtray-gui.exe.config">
       <Output TaskParameter="Include" ItemName="PackFiles" />
     </CreateItem>
     <Copy SourceFiles="@(PackFiles)" DestinationFolder="$(MSBuildProjectDirectory)\package\lib\xtv\" />
     <Copy SourceFiles="@(UnixLibs)" DestinationFolder="$(MSBuildProjectDirectory)\package\lib\xtv\" />
     <Message Text="Files = @(PackFiles)" />
-    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\xtv.exe">
+    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\xtray-gui.exe">
       <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
     </GetAssemblyIdentity>
     <Message Text="Version = %(myAssemblyInfo.Version)" />

@@ -7,7 +7,7 @@ using Gtk;
 
 namespace Xtv.GtkSharp
 {
-    using Parser;
+    using Common.Parsers;
     using System.IO;
     public class MainWindow : GladyWindow
     {

@@ -9,7 +9,8 @@ using Cout = System.Console;
 
 namespace Xtv.Console
 {
-    using Parser;
+    using Common.Abstractions;
+    using Common.Parsers;
 
     class Program
     {
@@ -20,7 +21,7 @@ namespace Xtv.Console
                 Cout.WriteLine(string.Format("Usage: {0} <filename> [-n]", Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)));
                 Cout.WriteLine("The dump style arguments (n) are as follows: ");
                 var index = 0;
-                foreach (var style in Enum.GetNames(typeof(Trace.DumpStyle))) {
+                foreach (var style in Enum.GetNames(typeof(TraceExtensions.DumpStyle))) {
                     Cout.WriteLine($" -{index++} : {style}");
                 }
                 return;
@@ -32,7 +33,7 @@ namespace Xtv.Console
                 var parser = Parser.ParseFile(options.Item1);
                 Cout.WriteLine(parser.GetInfo());
                 Cout.WriteLine();
-                Dump(new Trace[] { parser.RootTrace }, options.Item2);
+                Dump(new ITrace[] { parser.RootTrace }, options.Item2);
             }
             catch (Exception ex)
             {
@@ -40,7 +41,7 @@ namespace Xtv.Console
             }
         }
 
-        private static void Dump(Trace[] traces, int style)
+        private static void Dump(ITrace[] traces, int style)
         {
             foreach (var trace in traces)
             {
@@ -55,7 +56,7 @@ namespace Xtv.Console
         private static Tuple<string, int> ParseArgs(string[] args)
         {
             string file = null;
-            int style = (int)Trace.DumpStyle.HumanReadable;
+            int style = (int)TraceExtensions.DumpStyle.HumanReadable;
             foreach (var arg in args)
             {
                 if (arg[0] == '-')

@@ -4,11 +4,7 @@
     <Section FontFamily="Segoe UI">
         <Paragraph>
             Feel free to file issues under and submit pull requests at the github page:
-            <Hyperlink NavigateUri="http://github.com/boykathemad/xdebug-trace-viewer">boykathemad/xdebug-trace-viewer</Hyperlink>
-        </Paragraph>
-        <Paragraph>
-            Royalty free window and about icon from:
-            <Hyperlink NavigateUri="http://flaticons.net">FlatIcons.net</Hyperlink>
+            <Hyperlink NavigateUri="https://github.com/boykathemad/xt-ray">boykathemad/xt-ray</Hyperlink>
         </Paragraph>
         <Paragraph>
             Contributors:

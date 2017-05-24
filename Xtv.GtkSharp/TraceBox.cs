@@ -8,7 +8,8 @@ using Gtk;
 
 namespace Xtv.GtkSharp
 {
-    using Parser;
+    using Common.Parsers;
+    using Common.Abstractions;
 
     class TraceBox : VBox
     {
@@ -39,8 +40,8 @@ namespace Xtv.GtkSharp
 #pragma warning restore 0649
         #endregion
 
-        private Trace _trace;
-        public Trace Trace
+        private ITrace _trace;
+        public ITrace Trace
         {
             get
             {
@@ -143,22 +144,29 @@ namespace Xtv.GtkSharp
 
         private void ShowTrace()
         {
-            CallLabel.Markup = (Trace.IsUserDefined ? "<b>" : "") + Trace.Call + (Trace.IsUserDefined ? "</b>" : "") + "(";
-            ParametersLabel.Markup = Trace.Parameters.Length > 0 ? "<u>" + string.Join(", ", Trace.Parameters) + "</u>" : string.Empty;
-            FileLabel.Text = Trace.FileName + " @ L" + Trace.FileLine;
+            CallLabel.Markup = (Trace.IsUserDefined ? "<b>" : "") + Trace.Call.Name + (Trace.IsUserDefined ? "</b>" : "") + "(";
+            if (Trace.ReferencedFile == null)
+            {
+                ParametersLabel.Markup = Trace.Parameters != null ? "<u>" + string.Join(", ", Trace.Parameters) + "</u>" : string.Empty;
+            }
+            else
+            {
+                ParametersLabel.Markup = Trace.ReferencedFile.Path;
+            }
+            FileLabel.Text = Trace.File.Path + " @ L" + Trace.FileLine;
             ExpandButton.Sensitive = IsExpandable;
         }
 
 
         private void ParamsRealize(object sender, EventArgs e)
         {
-            if (Trace.Parameters.Length > 0)
+            if (Trace.Parameters != null)
             {
                 ParamsEventBox.GdkWindow.Cursor = handCursor;
             }
         }
 
-        public TraceBox(Trace trace) : this()
+        public TraceBox(ITrace trace) : this()
         {
             Trace = trace;
         }
@@ -172,14 +180,17 @@ namespace Xtv.GtkSharp
 
         private void ParamsLabelAction(object sender, ButtonPressEventArgs e)
         {
-            var dialog = new ParamsWindow(Trace.Parameters);
-            var result = (ResponseType)Enum.ToObject(typeof(ResponseType), dialog.Run());
-            switch (result)
+            if (Trace.ReferencedFile == null)
             {
-                case ResponseType.DeleteEvent:
-                case ResponseType.Cancel:
-                    dialog.Destroy();
-                    break;
+                var dialog = new ParamsWindow(Trace.Parameters);
+                var result = (ResponseType)Enum.ToObject(typeof(ResponseType), dialog.Run());
+                switch (result)
+                {
+                    case ResponseType.DeleteEvent:
+                    case ResponseType.Cancel:
+                        dialog.Destroy();
+                        break;
+                }
             }
         }
     }

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Xtv.Parser
+namespace Xtv.Common.Parsers
 {
     public class ParserException : Exception
     {

@@ -19,7 +19,7 @@
 
 
   <ItemGroup>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Parser\Xtv.Parser.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Common\Xtv.Common.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Windows\Xtv.Windows.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.GtkSharp\Xtv.GtkSharp.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Console\Xtv.Console.csproj"/>
@@ -39,32 +39,6 @@
 
   <Target Name="Build">
     <CallTarget Targets="Compile" />
-  </Target>
-
-  <Target Name="Version">
-    <Time>
-      <Output TaskParameter="Year" PropertyName="Year" />
-    </Time>
-    <Message Text="Version: $(Revision)" />
-    <ReadLinesFromFile File="@(BuildNumberFile)">
-      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
-    </ReadLinesFromFile>
-    <CreateProperty Value="$(MajorVersion).$(MinorVersion).$(Revision).$(BuildNumber)">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </CreateProperty>
-    <Message Text="Version: $(Version)" />
-    <Add Numbers="$(BuildNumber);1">
-      <Output TaskParameter="Result" PropertyName="NextBuild" />
-    </Add>
-    <Message Text="Next build is: $(NextBuild)" />
-    <WriteLinesToFile File="@(BuildNumberFile)" Lines="$(NextBuild)" Overwrite="true" Encoding="ASCII"/>
-
-    <Attrib Files="$(MSBuildProjectDirectory)\SharedAssemblyInfo.cs" ReadOnly="False" />
-    <AssemblyInfo CodeLanguage="CS" OutputFile="$(MSBuildProjectDirectory)\SharedAssemblyInfo.cs" GenerateClass="true"
-                  AssemblyVersion="$(Version)"
-                  AssemblyFileVersion="$(Version)"
-                  AssemblyCopyright="Copyright © $(Year) BoykaTheMad. All rights reserved."
-                  AssemblyInformationalVersion="$(Version)" />
   </Target>
 
   <Target Name="Releasify-Windows">

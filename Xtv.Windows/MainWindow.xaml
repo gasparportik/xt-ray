@@ -23,9 +23,10 @@
                     <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
                     <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}">About</Button>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" FlowDirection="RightToLeft">
-                    <TextBox x:Name="SearchBox" HorizontalAlignment="Right" Width="200" Visibility="Hidden"></TextBox>
-                </StackPanel>
+                <DockPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBox DockPanel.Dock="Right" x:Name="SearchBox" HorizontalAlignment="Right" TextAlignment="Left" Width="200" Visibility="Visible" Padding="4"></TextBox>
+                    <Label HorizontalAlignment="Right">Filter:</Label>
+                </DockPanel>
             </Grid>
         </Border>
         <Border Grid.Row="1" Background="White">

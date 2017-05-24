@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{74A4377D-8E8C-435B-8573-4CE372630F0F}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{74A437
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtv.Windows", "Xtv.Windows\Xtv.Windows.csproj", "{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtv.Parser", "Xtv.Parser\Xtv.Parser.csproj", "{8A231553-C6B5-4C61-B0CD-13AE65F0174E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtv.Common", "Xtv.Common\Xtv.Common.csproj", "{8A231553-C6B5-4C61-B0CD-13AE65F0174E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtv.Console", "Xtv.Console\Xtv.Console.csproj", "{96E18B06-6074-46DC-B27B-258BC38A7B98}"
 EndProject
@@ -35,10 +35,10 @@ Global
 		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|x86.Build.0 = Debug|Any CPU
-		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.ActiveCfg = Release|Any CPU
-		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.Build.0 = Release|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.Build.0 = Debug|Any CPU
 		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|x86.ActiveCfg = Debug|Any CPU
