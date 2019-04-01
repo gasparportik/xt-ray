@@ -93,5 +93,30 @@ namespace Xtv.Windows
                 rootTrace.ProfileInfoVisible = !rootTrace.ProfileInfoVisible;
             }
         }
+
+        /**
+         * Support Drag file into the window and start parsing it
+         */
+        private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (file.Length > 1)
+                {
+                    MessageBox.Show("You can only drag one file into the window ^_^");
+                    return;
+                }
+
+                try
+                {
+                    openFile(file[0]);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            } 
+        }
     }
 }

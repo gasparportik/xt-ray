@@ -13,6 +13,7 @@
             <ListItem>
                 <Paragraph>
                     <Hyperlink NavigateUri="http://github.com/boykathemad">BoykaTheMad</Hyperlink>
+                    <Hyperlink NavigateUri="http://github.com/q792602257">JerryYan</Hyperlink>
                 </Paragraph>
             </ListItem>
         </List>
