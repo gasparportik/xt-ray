@@ -57,6 +57,7 @@ namespace Xtv.Windows
             }
         }
 
+        public string ReturnValue => Trace.ReturnValue ?? "void";
         public string FileInfo => Trace.File.Path + " @ L" + Trace.FileLine;
 
         public bool IsExpandable => Trace.Children.Length > 0;

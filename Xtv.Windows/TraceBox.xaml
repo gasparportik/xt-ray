@@ -36,6 +36,8 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="{Binding Call}" FontWeight="{Binding IsUserDefined, Converter={StaticResource BoolToBold}}" FontSize="14"></TextBlock>
                 <TextBlock Grid.Column="1" FontSize="14">(</TextBlock>
@@ -44,6 +46,8 @@
                     <TextBlock FontSize="14" Text="{Binding Parameters}" TextTrimming="WordEllipsis"></TextBlock>
                 </Label>
                 <TextBlock Grid.Column="3" FontSize="14">)</TextBlock>
+                <TextBlock Grid.Column="4" FontSize="14"> => </TextBlock>
+                <TextBlock Grid.Column="5" FontSize="14" Text="{Binding ReturnValue}"></TextBlock>
             </Grid>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding FileInfo}" FontSize="11" Margin="0,-3,0,0"></TextBlock>
             <StackPanel Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding ProfileInfoVisibility}" MinWidth="100" Margin="0,6,0,0">

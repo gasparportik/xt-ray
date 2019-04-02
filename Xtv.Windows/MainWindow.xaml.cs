@@ -24,14 +24,6 @@ namespace Xtv.Windows
             InitializeComponent();
             var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(333);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
-
-#if DEBUG
-            try
-            {
-                openFile(@"C:\tmp\traces\trace.sample.xt");
-            }
-            catch { }
-#endif
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
