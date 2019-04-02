@@ -16,8 +16,8 @@
         <Border Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
                     <Button Click="LoadButton_Click" Padding="15,5" Style="{x:Null}">Open File...</Button>
