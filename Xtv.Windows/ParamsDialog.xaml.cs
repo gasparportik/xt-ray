@@ -7,7 +7,7 @@ namespace Xtv.Windows
         public ParamsDialog(string[] parameters)
         {
             InitializeComponent();
-            TextBox.Text = string.Join("\r\n", parameters);
+            ParamTextBox.Text = string.Join("\r\n", parameters);
         }
     }
 }

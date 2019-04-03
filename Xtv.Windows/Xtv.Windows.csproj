@@ -63,6 +63,9 @@
     <Compile Include="ParamsDialog.xaml.cs">
       <DependentUpon>ParamsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReturnValueDialog.xaml.cs">
+      <DependentUpon>ReturnValueDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TraceBox.xaml.cs">
       <DependentUpon>TraceBox.xaml</DependentUpon>
     </Compile>
@@ -92,6 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Themes\CustomStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReturnValueDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

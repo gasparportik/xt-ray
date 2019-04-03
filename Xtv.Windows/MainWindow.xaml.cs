@@ -79,8 +79,7 @@ namespace Xtv.Windows
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            var rootTrace = TraceViewer.Content as TraceBox;
-            if (rootTrace != null)
+            if (TraceViewer.Content is TraceBox rootTrace)
             {
                 rootTrace.ProfileInfoVisible = !rootTrace.ProfileInfoVisible;
             }
@@ -91,15 +90,17 @@ namespace Xtv.Windows
          */
         private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
         {
+            // Check is file drag in
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+                // if drag multiple files 
                 if (file.Length > 1)
                 {
                     MessageBox.Show("You can only drag one file into the window ^_^");
                     return;
                 }
-
+                // the same open method
                 try
                 {
                     openFile(file[0]);

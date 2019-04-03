@@ -51,9 +51,48 @@ namespace Xtv.Windows
             {
                 if (Trace.ReferencedFile == null)
                 {
-                    return Trace.Parameters != null && Trace.Parameters.Length > 0 ? string.Join(", ", Trace.Parameters) : string.Empty;
+                    return Trace.Parameters != null && Trace.Parameters.Length > 0 ? ParseParameters(Trace.Parameters) : string.Empty;
                 }
                 return "'" + Trace.ReferencedFile.Path + "'";
+            }
+        }
+
+        public string TooltipParameters
+        {
+            get
+            {
+                return FullParameters.Length > 50 ? "Dobule Click to Show All Parameters" : FullParameters;
+            }
+        }
+
+        public string FullParameters
+        {
+            get
+            {
+                if (Trace.ReferencedFile == null)
+                {
+                    return Trace.Parameters != null && Trace.Parameters.Length > 0 ? string.Join(", ", Trace.Parameters) : "No Parameters";
+                }
+                return "'" + Trace.ReferencedFile.Path + "'";
+            }
+        }
+
+        public string ParseParameters(string[] parameters)
+        {
+            string[] parsed = new string[parameters.Length];
+            for (var i = parameters.Length - 1; i >= 0; --i)
+            {
+                var _tmp = parameters[i].Split(' ');
+                parsed[i] = _tmp[0];
+            }
+            return string.Join(",",parsed);
+        }
+        
+        public string TooltipReturnValue
+        {
+            get
+            {
+                return ReturnValue.Length > 50 ? "Dobule Click to Show Return Value" : ReturnValue;
             }
         }
 
@@ -167,6 +206,15 @@ namespace Xtv.Windows
                 };
                 dialog.ShowDialog();
             }
+        }
+
+        private void ValueLabelAction(object sender, MouseButtonEventArgs e)
+        {
+            var dialog = new ReturnValueDialog(Trace.ReturnValue)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            dialog.ShowDialog();
         }
 
         #region IDisposable Support
