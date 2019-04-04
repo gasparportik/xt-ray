@@ -23,22 +23,16 @@ namespace Xtv.Windows
         public MainWindow()
         {
             InitializeComponent();
-            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(333);
+            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
             // support get args from startup
             string[] args = Environment.GetCommandLineArgs();
             // index = 0 is the program self
+            // index = 1 is the first param
+            // ...etc
             if (args.Length > 1 && File.Exists(args[1]))
             {
-                // the same
-                try
-                {
-                    openFile(args[1]);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                openFileWrapper(args[1]);
             }
         }
 
@@ -74,15 +68,7 @@ namespace Xtv.Windows
             };
             if (fd.ShowDialog(this) ?? false)
             {
-                try
-                {
-                    openFile(fd.FileName);
-                    
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                openFileWrapper(fd.FileName);
             }
         }
 
@@ -102,6 +88,25 @@ namespace Xtv.Windows
         }
 
         /**
+         * the same open method
+         */
+        private void openFileWrapper(string fileName)
+        {
+            try
+            {
+                if (!File.Exists(fileName))
+                {
+                    throw new FileNotFoundException();
+                }
+                openFile(fileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
+        /**
          * Support Drag file into the window and start parsing it
          */
         private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
@@ -116,15 +121,7 @@ namespace Xtv.Windows
                     MessageBox.Show("You can only drag one file into the window ^_^");
                     return;
                 }
-                // the same open method
-                try
-                {
-                    openFile(file[0]);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                openFileWrapper(file[0]);
             } 
         }
     }

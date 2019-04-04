@@ -17,7 +17,7 @@ namespace Xtv.Common
         private static readonly ITrace[] EmptyTraceArray = new ITrace[0];
 
         public byte Level { get; internal set; }
-        public short CallIndex { get; internal set; }
+        public ulong CallIndex { get; internal set; }
         public TraceCall Call { get; internal set; }
         public string[] Parameters { get; internal set; }
         public bool IsUserDefined { get; internal set; }
