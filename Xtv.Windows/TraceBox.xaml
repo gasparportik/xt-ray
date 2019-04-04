@@ -52,7 +52,7 @@
                     </TextBlock>
                 </Label>
                 <TextBlock Grid.Column="3" FontSize="14">)</TextBlock>
-                <TextBlock Grid.Column="4" FontSize="14"> => </TextBlock>
+                <TextBlock Grid.Column="4" FontSize="14" Visibility="{Binding ReturnValueVisibility}"> => </TextBlock>
                 <Label Grid.Column="5" Padding="0" MouseDoubleClick="ValueLabelAction">
                     <TextBlock FontSize="14" Text="{Binding ReturnValue}">
                         <ToolTipService.ToolTip>

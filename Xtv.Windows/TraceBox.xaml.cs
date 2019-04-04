@@ -45,6 +45,7 @@ namespace Xtv.Windows
 
         public bool HasParameters => Trace.Parameters != null && Trace.Parameters.Length > 0;
 
+        // Minimize parameters
         public string Parameters
         {
             get
@@ -57,11 +58,12 @@ namespace Xtv.Windows
             }
         }
 
+        // if parameters not too long ,just show in tooltip
         public string TooltipParameters
         {
             get
             {
-                return FullParameters.Length > 50 ? "Dobule Click to Show All Parameters" : FullParameters;
+                return FullParameters.Length > 80 ? "Dobule Click to Show All Parameters" : FullParameters;
             }
         }
 
@@ -96,7 +98,9 @@ namespace Xtv.Windows
             }
         }
 
-        public string ReturnValue => Trace.ReturnValue ?? "void";
+        public string ReturnValueVisibility => Trace.ReturnValue?.Length > 0 ? "Visible" : "Hidden";
+
+        public string ReturnValue => Trace.ReturnValue ?? "";
         public string FileInfo => Trace.File.Path + " @ L" + Trace.FileLine;
 
         public bool IsExpandable => Trace.Children.Length > 0;
