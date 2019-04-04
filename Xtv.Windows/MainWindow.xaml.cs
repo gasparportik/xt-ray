@@ -4,6 +4,7 @@
 
 using Microsoft.Win32;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Threading.Tasks;
@@ -24,6 +25,21 @@ namespace Xtv.Windows
             InitializeComponent();
             var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(333);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
+            // support get args from startup
+            string[] args = Environment.GetCommandLineArgs();
+            // index = 0 is the program self
+            if (args.Length > 1 && File.Exists(args[1]))
+            {
+                // the same
+                try
+                {
+                    openFile(args[1]);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
