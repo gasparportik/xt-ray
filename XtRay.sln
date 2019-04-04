@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{74A4377D-8E8C-435B-8573-4CE372630F0F}"
+	ProjectSection(SolutionItems) = preProject
+		Build.msbuildproj = Build.msbuildproj
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
+		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XtRay.Windows", "XtRay.Windows\XtRay.Windows.csproj", "{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XtRay.ParserLib", "XtRay.ParserLib\XtRay.ParserLib.csproj", "{8A231553-C6B5-4C61-B0CD-13AE65F0174E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XtRay.Console", "XtRay.Console\XtRay.Console.csproj", "{96E18B06-6074-46DC-B27B-258BC38A7B98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32C718CF-FD2E-469E-9655-4F56F3CB13AC}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XtRay.GtkSharp", "XtRay.GtkSharp\XtRay.GtkSharp.csproj", "{792F50C0-3334-46E7-B24B-FB0997DEF213}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Debug|x86.Build.0 = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.ActiveCfg = Debug|Any CPU
+		{BBCB92B0-A9DC-4D30-B23C-1CC48C70C06E}.Release|x86.Build.0 = Debug|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A231553-C6B5-4C61-B0CD-13AE65F0174E}.Release|x86.Build.0 = Release|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Debug|x86.Build.0 = Debug|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Release|x86.ActiveCfg = Release|Any CPU
+		{96E18B06-6074-46DC-B27B-258BC38A7B98}.Release|x86.Build.0 = Release|Any CPU
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Debug|x86.ActiveCfg = Debug|x86
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Debug|x86.Build.0 = Debug|x86
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Release|x86.ActiveCfg = Release|x86
+		{792F50C0-3334-46E7-B24B-FB0997DEF213}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15028D7C-94D7-4135-A05D-A6958141E2E1}
+	EndGlobalSection
+EndGlobal

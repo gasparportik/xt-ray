@@ -1,0 +1,25 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:local="clr-namespace:XtRay.Windows"
+              ColumnWidth="400" FontSize="14" FontFamily="Georgia">
+    <Section FontFamily="Segoe UI">
+        <Paragraph>
+            Feel free to file issues under and submit pull requests at the github page:
+            <Hyperlink NavigateUri="https://github.com/boykathemad/xt-ray">boykathemad/xt-ray</Hyperlink>
+        </Paragraph>
+        <Paragraph>
+            Contributors:
+        </Paragraph>
+        <List>
+            <ListItem>
+                <Paragraph>
+                    <Hyperlink NavigateUri="http://github.com/boykathemad">BoykaTheMad</Hyperlink>
+                </Paragraph>
+            </ListItem>
+            <ListItem>
+                <Paragraph>
+                    <Hyperlink NavigateUri="http://github.com/q792602257">JerryYan</Hyperlink>
+                </Paragraph>
+            </ListItem>
+        </List>
+    </Section>
+</FlowDocument>

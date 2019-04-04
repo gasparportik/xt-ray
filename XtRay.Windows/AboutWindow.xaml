@@ -1,0 +1,44 @@
+﻿<Window x:Class="XtRay.Windows.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XtRay.Windows"
+        mc:Ignorable="d"
+        Title="About XTV" Height="500" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FFAAAAAA">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="201*"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="AppIcon" Source="Resources/app.png" Width="128" Height="128" Margin="10" />
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                <Label FontSize="22" Content="{Binding TitleText}" Height="Auto" VerticalAlignment="Center"></Label>
+                <Label Content="{Binding VersionText}" />
+                <Label Content="{Binding CopyrightText}" />
+                <Label Content="{Binding ProductText}" />
+                <Label Content="{Binding DescriptionText}" />
+                <Label Content="{Binding DisclaimerText}" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <FlowDocumentScrollViewer Grid.Row="0" Background="White" VerticalScrollBarVisibility="Auto" Document="{Binding AboutText}" />
+            <Button Content="OK" IsDefault="True" IsCancel="True" HorizontalAlignment="Right" Margin="6" Grid.Row="1" Padding="25,5" />
+        </Grid>
+    </Grid>
+</Window>

@@ -19,10 +19,10 @@
 
 
   <ItemGroup>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Common\Xtv.Common.csproj"/>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Windows\Xtv.Windows.csproj"/>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.GtkSharp\Xtv.GtkSharp.csproj"/>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\Xtv.Console\Xtv.Console.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Common\XtRay.Common.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Windows\XtRay.Windows.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.GtkSharp\XtRay.GtkSharp.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Console\XtRay.Console.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,11 +42,11 @@
   </Target>
 
   <Target Name="Releasify-Windows">
-    <MSBuild Projects="$(MSBuildProjectDirectory)\Xtv.Windows\Xtv.Windows.csproj" Targets="Releasify" Properties="Configuration=Release" />
+    <MSBuild Projects="$(MSBuildProjectDirectory)\XtRay.Windows\XtRay.Windows.csproj" Targets="Releasify" Properties="Configuration=Release" />
   </Target>
 
   <Target Name="Releasify-Linux">
-    <MSBuild Projects="$(MSBuildProjectDirectory)\Xtv.GtkSharp\Xtv.GtkSharp.csproj" Targets="Releasify" Properties="Configuration=Release" />
+    <MSBuild Projects="$(MSBuildProjectDirectory)\XtRay.GtkSharp\XtRay.GtkSharp.csproj" Targets="Releasify" Properties="Configuration=Release" />
   </Target>
 
   <Target Name="Releasify">

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{96E18B06-6074-46DC-B27B-258BC38A7B98}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>XtRay.Console</RootNamespace>
+    <AssemblyName>xtray</AssemblyName>
+    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <Version>0.2.0.7</Version>
+    <Authors>Xt-Ray contributors</Authors>
+    <Company>Xt-Ray contributors</Company>
+    <Product>Xt-Ray CLI</Product>
+    <Description>An xdebug trace file viewer</Description>
+    <PackageId>xt-ray</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XtRay.ParserLib\XtRay.ParserLib.csproj" />
+  </ItemGroup>
+  
+</Project>
