@@ -14,7 +14,7 @@ namespace Xtv.Common.Abstractions
     public interface ITrace
     {
         byte Level { get; }
-        ulong CallIndex { get; }
+        uint CallIndex { get; }
         TraceCall Call { get; }
         bool IsUserDefined { get; }
         string[] Parameters { get; }

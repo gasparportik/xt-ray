@@ -142,7 +142,7 @@ namespace Xtv.Common.Parsers
             {
 
                 trace.Level = byte.Parse(parts[0], CultureInfo.InvariantCulture);
-                trace.CallIndex = ulong.Parse(parts[1], CultureInfo.InvariantCulture);
+                trace.CallIndex = uint.Parse(parts[1], CultureInfo.InvariantCulture);
                 trace.TimeStart = float.Parse(parts[3], CultureInfo.InvariantCulture);
                 trace.MemoryStart = int.Parse(parts[4], CultureInfo.InvariantCulture);
                 trace.Call = AddCall(parts[5]);
