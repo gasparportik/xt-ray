@@ -88,7 +88,7 @@ namespace Xtv.Common.Parsers
                                 {
                                     var lastTrace = stack.Pop();
                                     last = lastTrace;
-                                    if (lastTrace.CallIndex == short.Parse(parts[1], CultureInfo.InvariantCulture))
+                                    if (lastTrace.CallIndex == ulong.Parse(parts[1], CultureInfo.InvariantCulture))
                                     {
                                         lastTrace.MemoryEnd = int.Parse(parts[4], CultureInfo.InvariantCulture);
                                         lastTrace.TimeEnd = float.Parse(parts[3], CultureInfo.InvariantCulture);
@@ -142,7 +142,7 @@ namespace Xtv.Common.Parsers
             {
 
                 trace.Level = byte.Parse(parts[0], CultureInfo.InvariantCulture);
-                trace.CallIndex = short.Parse(parts[1], CultureInfo.InvariantCulture);
+                trace.CallIndex = ulong.Parse(parts[1], CultureInfo.InvariantCulture);
                 trace.TimeStart = float.Parse(parts[3], CultureInfo.InvariantCulture);
                 trace.MemoryStart = int.Parse(parts[4], CultureInfo.InvariantCulture);
                 trace.Call = AddCall(parts[5]);

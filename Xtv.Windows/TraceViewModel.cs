@@ -12,6 +12,7 @@ namespace Xtv.Windows
         public string Call { get; } = "file_get_contents";
         public bool HasParameters { get; } = true;
         public string Parameters { get; } = "'my_awesome_file','wtf_param_is_this'";
+        public string ReturnValue { get; } = "void";
         public string FileInfo { get; } = "/home/www/myapp/wwwroot/index.php @ L37";
         public Brush BackColor { get; } = Brushes.Beige;
         public bool IsExpandable { get; } = true;

@@ -4,6 +4,7 @@
 
 using Microsoft.Win32;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Threading.Tasks;
@@ -22,16 +23,17 @@ namespace Xtv.Windows
         public MainWindow()
         {
             InitializeComponent();
-            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(333);
+            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
-
-#if DEBUG
-            try
+            // support get args from startup
+            string[] args = Environment.GetCommandLineArgs();
+            // index = 0 is the program self
+            // index = 1 is the first param
+            // ...etc
+            if (args.Length > 1 && File.Exists(args[1]))
             {
-                openFile(@"C:\tmp\traces\trace.sample.xt");
+                openFileWrapper(args[1]);
             }
-            catch { }
-#endif
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -66,15 +68,7 @@ namespace Xtv.Windows
             };
             if (fd.ShowDialog(this) ?? false)
             {
-                try
-                {
-                    openFile(fd.FileName);
-                    
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                openFileWrapper(fd.FileName);
             }
         }
 
@@ -87,11 +81,48 @@ namespace Xtv.Windows
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            var rootTrace = TraceViewer.Content as TraceBox;
-            if (rootTrace != null)
+            if (TraceViewer.Content is TraceBox rootTrace)
             {
                 rootTrace.ProfileInfoVisible = !rootTrace.ProfileInfoVisible;
             }
+        }
+
+        /**
+         * the same open method
+         */
+        private void openFileWrapper(string fileName)
+        {
+            try
+            {
+                if (!File.Exists(fileName))
+                {
+                    throw new FileNotFoundException();
+                }
+                openFile(fileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load/parse the selected file! \r\nSome indication: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        
+        /**
+         * Support Drag file into the window and start parsing it
+         */
+        private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
+        {
+            // Check is file drag in
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
+                // if drag multiple files 
+                if (file.Length > 1)
+                {
+                    MessageBox.Show("You can only drag one file into the window ^_^");
+                    return;
+                }
+                openFileWrapper(file[0]);
+            } 
         }
     }
 }

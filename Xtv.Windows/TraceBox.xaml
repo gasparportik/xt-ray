@@ -36,14 +36,32 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="{Binding Call}" FontWeight="{Binding IsUserDefined, Converter={StaticResource BoolToBold}}" FontSize="14"></TextBlock>
                 <TextBlock Grid.Column="1" FontSize="14">(</TextBlock>
                 <!-- Visibility="{Binding HasParameters, Converter={StaticResource BoolToVis}}" -->
                 <Label Grid.Column="2" Padding="0" MouseDoubleClick="ParamsLabelAction">
-                    <TextBlock FontSize="14" Text="{Binding Parameters}" TextTrimming="WordEllipsis"></TextBlock>
+                    <TextBlock FontSize="14" Text="{Binding Parameters}" TextTrimming="WordEllipsis">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Style="{DynamicResource NormalToolTip}">
+                                <TextBlock FontSize="12" TextWrapping="Wrap" Text="{Binding TooltipParameters}"></TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
                 </Label>
                 <TextBlock Grid.Column="3" FontSize="14">)</TextBlock>
+                <TextBlock Grid.Column="4" FontSize="14" Visibility="{Binding ReturnValueVisibility}"> => </TextBlock>
+                <Label Grid.Column="5" Padding="0" MouseDoubleClick="ValueLabelAction">
+                    <TextBlock FontSize="14" Text="{Binding ReturnValue}">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Style="{DynamicResource NormalToolTip}">
+                                <TextBlock TextWrapping="Wrap" FontSize="12" Text="{Binding TooltipReturnValue}"></TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </Label>
             </Grid>
             <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding FileInfo}" FontSize="11" Margin="0,-3,0,0"></TextBlock>
             <StackPanel Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding ProfileInfoVisibility}" MinWidth="100" Margin="0,6,0,0">
