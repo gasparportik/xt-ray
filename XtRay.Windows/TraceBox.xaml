@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="XtRay.Windows.TraceBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:XtRay.Windows"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:TraceViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="100" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:BoolToBoldnessConverter x:Key="BoolToBold" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <local:PercentToHeatConverter x:Key="PercentToHeat" />
+    </UserControl.Resources>
+    <Grid Background="#FFF1F1F1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Margin="3,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="15" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid HorizontalAlignment="Left" Margin="0,0,10,0" Visibility="{Binding MatchesSearch, Converter={StaticResource BoolToVis}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Call}" FontWeight="{Binding IsUserDefined, Converter={StaticResource BoolToBold}}" FontSize="14"></TextBlock>
+                <TextBlock Grid.Column="1" FontSize="14">(</TextBlock>
+                <!-- Visibility="{Binding HasParameters, Converter={StaticResource BoolToVis}}" -->
+                <Label Grid.Column="2" Padding="0" MouseDoubleClick="ParamsLabelAction">
+                    <TextBlock FontSize="14" Text="{Binding Parameters}" TextTrimming="WordEllipsis">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Style="{DynamicResource NormalToolTip}">
+                                <TextBlock FontSize="12" TextWrapping="Wrap" Text="{Binding TooltipParameters}"></TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </Label>
+                <TextBlock Grid.Column="3" FontSize="14">)</TextBlock>
+                <TextBlock Grid.Column="4" FontSize="14" Visibility="{Binding ReturnValueVisibility}"> => </TextBlock>
+                <Label Grid.Column="5" Padding="0" MouseDoubleClick="ValueLabelAction">
+                    <TextBlock FontSize="14" Text="{Binding ReturnValue}">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Style="{DynamicResource NormalToolTip}">
+                                <TextBlock TextWrapping="Wrap" FontSize="12" Text="{Binding TooltipReturnValue}"></TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </Label>
+            </Grid>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding FileInfo}" FontSize="11" Margin="0,-3,0,0"></TextBlock>
+            <StackPanel Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding ProfileInfoVisibility}" MinWidth="100" Margin="0,6,0,0">
+                <ProgressBar Value="{Binding ParentTimingPercent, Mode=OneTime}" Margin="0,0,0,1" BorderThickness="0" Height="3" Background="Black" Foreground="{Binding ParentTimingPercent, Converter={StaticResource PercentToHeat}}" />
+                <TextBlock Text="{Binding TimingInfo}" FontSize="10" />
+                <ProgressBar Value="{Binding TotalTimingPercent, Mode=OneTime}" FlowDirection="RightToLeft" BorderThickness="0" Height="3" Background="Black" Foreground="{Binding TotalTimingPercent, Converter={StaticResource PercentToHeat}}" />
+            </StackPanel>
+        </Grid>
+        <ToggleButton Grid.Row="0" IsEnabled="{Binding IsExpandable}" IsChecked="{Binding IsExpanded, Mode=TwoWay}" PreviewKeyDown="ExpandButton_PreviewKeyDown" VerticalAlignment="Center" Width="20" Height="20" Margin="2"></ToggleButton>
+        <StackPanel x:Name="ChildrenPanel" Grid.Row="1" Grid.Column="1" Visibility="{Binding Expanded}"></StackPanel>
+        <Border Grid.Row="1" Width="2" Background="#FF333333" Visibility="{Binding Expanded}" Margin="0,-7,0,5"></Border>
+        <Border Grid.Row="1" Height="2" Width="10" Background="#FF333333" Visibility="{Binding Expanded}" VerticalAlignment="Bottom" Margin="10,0,0,5"></Border>
+    </Grid>
+</UserControl>

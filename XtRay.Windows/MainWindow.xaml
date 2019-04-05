@@ -1,0 +1,40 @@
+﻿<Window x:Class="XtRay.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XtRay.Windows"
+        mc:Ignorable="d"
+        AllowDrop="True"
+        Title="Xdebug Trace Viewer" Height="550" Width="680">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
+                    <Button Click="LoadButton_Click" Padding="15,5" Style="{x:Null}">Open File...</Button>
+                    <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
+                    <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}">About</Button>
+                </StackPanel>
+                <DockPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBox DockPanel.Dock="Right" x:Name="SearchBox" HorizontalAlignment="Right" TextAlignment="Left" Width="100" Visibility="Visible" Padding="4"></TextBox>
+                    <Label HorizontalAlignment="Right">Filter:</Label>
+                </DockPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="White" Drop="MainWindow_OnDragDrop">
+            <ScrollViewer Margin="6,0,0,0" x:Name="TraceViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Border>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ProgressBar Height="20"></ProgressBar>
+        </StackPanel>
+    </Grid>
+</Window>
