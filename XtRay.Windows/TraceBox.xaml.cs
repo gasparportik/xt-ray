@@ -4,18 +4,16 @@
 
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.Generic;
+using XtRay.ParserLib;
+using XtRay.ParserLib.Abstractions;
 
 namespace XtRay.Windows
 {
-    using Common;
-    using Common.Abstractions;
-
     public partial class TraceBox : UserControl, ITraceUiNode
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -87,9 +85,9 @@ namespace XtRay.Windows
                 var _tmp = parameters[i].Split(' ');
                 parsed[i] = _tmp[0];
             }
-            return string.Join(",",parsed);
+            return string.Join(",", parsed);
         }
-        
+
         public string TooltipReturnValue
         {
             get
@@ -173,7 +171,8 @@ namespace XtRay.Windows
 
         public void ShowChildren(IEnumerable<FlexibleTraceNode> traces)
         {
-            Action action = () => {
+            Action action = () =>
+            {
                 ChildrenPanel.Children.Clear();
                 foreach (var trace in traces)
                 {
@@ -185,7 +184,8 @@ namespace XtRay.Windows
             if (ChildrenPanel.Dispatcher.CheckAccess())
             {
                 action();
-            } else
+            }
+            else
             {
                 ChildrenPanel.Dispatcher.Invoke(action);
             }
