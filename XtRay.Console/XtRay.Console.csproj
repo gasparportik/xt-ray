@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>XtRay.Console</RootNamespace>
     <AssemblyName>xtray</AssemblyName>
-    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp2.2</TargetFrameworks>
     <Version>0.2.0.7</Version>
     <Authors>Xt-Ray contributors</Authors>
     <Company>Xt-Ray contributors</Company>
@@ -12,9 +12,12 @@
     <Description>An xdebug trace file viewer</Description>
     <PackageId>xt-ray</PackageId>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Options" Version="5.3.0.1" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XtRay.ParserLib\XtRay.ParserLib.csproj" />
   </ItemGroup>
-  
+
 </Project>

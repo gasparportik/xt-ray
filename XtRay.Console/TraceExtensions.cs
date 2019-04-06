@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+using XtRay.ParserLib.Abstractions;
 
 namespace XtRay.Console
 {
-    using Common.Abstractions;
-
     internal static class TraceExtensions
     {
-
         public static string ToString(this ITrace trace)
         {
             return ToString(trace, DumpStyle.MinimalDebug);
@@ -26,29 +23,30 @@ namespace XtRay.Console
             switch (style)
             {
                 case DumpStyle.HumanReadable:
-                    return string.Format("{0,10} {1,10} {2}-> {3}() {4}:{5}", trace.TimeStart.ToString("0.0000"), trace.MemoryStart, indent(trace.Level, ' '), trace.Call, trace.File.Path, trace.FileLine);
+                    return string.Format("{0,10} {1,10} {2}-> {3}() {4}:{5}", trace.TimeStart.ToString("0.0000"), trace.MemoryStart, Indent(trace.Level, ' '), trace.Call.Name, trace.File.Path, trace.FileLine);
                 case DumpStyle.HumanReadableMinimal:
-                    return string.Format("{0} {1}> {2} {3} @ L{4}", trace.Level.ToString("D3"), indent(trace.Level), trace.Call, trace.File.Path, trace.FileLine);
+                    return string.Format("{0} {1}> {2} {3} @ L{4}", trace.Level.ToString("D3"), Indent(trace.Level), trace.Call.Name, trace.File.Path, trace.FileLine);
                 case DumpStyle.Minimal:
-                    return string.Format("{0} {1} {2} -> {3}", trace.Level.ToString("D3"), trace.Call, trace.TimeStart, trace.TimeEnd);
+                    return string.Format("{0} {1} {2} -> {3}", trace.Level.ToString("D3"), trace.Call?.Name ?? "MISSING_CALLNAME", trace.TimeStart, trace.TimeEnd);
                 case DumpStyle.MinimalDebug:
-                    return string.Format(">{0} #{1} {2} {3} @ L{4}", trace.Level, trace.CallIndex, trace.Call, trace.File.Path, trace.FileLine);
+                    return string.Format(">{0} #{1} {2} {3} @ L{4}", trace.Level, trace.CallIndex, trace.Call.Name, trace.File.Path, trace.FileLine);
                 default:
-                    return "";
+                    return string.Empty;
             }
         }
 
-        private static string indent(int level, char filler = '-')
+        private static string Indent(int level, char filler = '-')
         {
             return new string(filler, level * 2);
         }
 
         internal enum DumpStyle
         {
-            MinimalDebug = 0,
+            None = 0,
             Minimal = 1,
-            HumanReadableMinimal = 2,
-            HumanReadable = 3
+            MinimalDebug = 2,
+            HumanReadableMinimal = 3,
+            HumanReadable = 4
         }
     }
 }
