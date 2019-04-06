@@ -7,16 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XtRay.ParserLib.Abstractions;
 
 namespace XtRay.ParserLib
 {
-    public class TraceFile
+    public class TraceTree : TraceParseResult
     {
-        public string Path { get; private set; }
-
-        public TraceFile(string path)
-        {
-            Path = path;
-        }
+        public ITrace RootTrace { get; internal set; }
     }
 }
