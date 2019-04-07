@@ -3,44 +3,42 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using System;
-using System.ComponentModel;
 using Gtk;
+using UI = Gtk.Builder.ObjectAttribute;
+using XtRay.ParserLib.Abstractions;
 
 namespace XtRay.GtkSharp
 {
-    using Common.Parsers;
-    using Common.Abstractions;
-
-    class TraceBox : VBox
+    class TraceBox : HBox
     {
         private static readonly Gdk.Cursor handCursor = new Gdk.Cursor(Gdk.CursorType.Hand1);
 
         #region Glade widget instances
-#pragma warning disable 0649
-        [Glade.Widget]
-        protected HBox TraceContainer;
-
-        [Glade.Widget]
+        [UI]
         protected Label CallLabel;
 
-        [Glade.Widget]
+        [UI]
         protected Label ParametersLabel;
 
-        [Glade.Widget]
+        [UI]
         protected EventBox ParamsEventBox;
 
-        [Glade.Widget]
+        [UI]
         protected Label FileLabel;
 
-        [Glade.Widget]
+        [UI]
         protected ToggleButton ExpandButton;
 
-        [Glade.Widget]
+        [UI]
+        protected Image ExpandButtonIcon;
+
+        [UI]
         protected new VBox Children;
-#pragma warning restore 0649
         #endregion
 
         private ITrace _trace;
+        private readonly CssProvider css;
+
         public ITrace Trace
         {
             get
@@ -75,7 +73,7 @@ namespace XtRay.GtkSharp
                 {
                     foreach (var child in Trace.Children)
                     {
-                        Children.PackStart(new TraceBox(child) { ProfileInfoVisible = _profileDataVisible }, false, true, 0);
+                        Children.PackStart(new TraceBox(css, child) { ProfileInfoVisible = _profileDataVisible }, false, true, 0);
                     }
                     _childrenLoaded = true;
                 }
@@ -129,17 +127,17 @@ namespace XtRay.GtkSharp
         }
         #endregion
 
-        public TraceBox() : base(false, 0)
+        private TraceBox(Builder builder) : base(builder.GetObject("TraceBox").Handle)
         {
-            using (var file = App.GetEmbeddedResourceStream("glade.TraceBox.glade"))
-            {
-                Glade.XML gxml = new Glade.XML(file, "TraceContainer", "");
-                gxml.Autoconnect(this);
-                this.PackStart(TraceContainer, false, true, 0);
-                this.ShowAll();
-            }
+            builder.Autoconnect(this);
+        }
 
-            IsExpanded = false;
+        public TraceBox(CssProvider css, ITrace trace) : this(new Builder("TraceBox.glade"))
+        {
+            this.css = css;
+            Trace = trace;
+            ShowAll();
+            this.ApplyCss(css);
         }
 
         private void ShowTrace()
@@ -162,19 +160,14 @@ namespace XtRay.GtkSharp
         {
             if (Trace.Parameters != null)
             {
-                ParamsEventBox.GdkWindow.Cursor = handCursor;
+                ParamsEventBox.Window.Cursor = handCursor;
             }
-        }
-
-        public TraceBox(ITrace trace) : this()
-        {
-            Trace = trace;
         }
 
         private void ToggleButton_Clicked(object sender, EventArgs e)
         {
             IsExpanded = !IsExpanded;
-            ExpandButton.Label = IsExpanded ? "-" : "+";
+            ExpandButtonIcon.Stock = IsExpanded ? "gtk-remove" : "gtk-add";
             Children.Visible = IsExpanded;
         }
 
@@ -182,7 +175,11 @@ namespace XtRay.GtkSharp
         {
             if (Trace.ReferencedFile == null)
             {
-                var dialog = new ParamsWindow(Trace.Parameters);
+                var dialog = new ParamsWindow(Trace.Parameters)
+                {
+                    Parent = this,
+                    Icon = Program.Logo
+                };
                 var result = (ResponseType)Enum.ToObject(typeof(ResponseType), dialog.Run());
                 switch (result)
                 {

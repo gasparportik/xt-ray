@@ -2,21 +2,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+using Gtk;
+using UI = Gtk.Builder.ObjectAttribute;
+
 namespace XtRay.GtkSharp
 {
-    public class AboutWindow : GladyWindow
+    public class AboutWindow : AboutDialog
     {
-        [Glade.Widget]
-        public Gtk.TextView AboutText;
+        [UI]
+        public TextView AboutText;
 
-        public AboutWindow() : base(Gtk.WindowType.Toplevel, "AboutWindow")
+        private AboutWindow(Builder builder) : base(builder.GetObject("AboutWindow").Handle)
         {
-            ((Gtk.AboutDialog)Window).Version = "v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            builder.Autoconnect(this);
         }
 
-        internal int Run()
+        public AboutWindow() : this(new Builder("AboutWindow.glade"))
         {
-            return ((Gtk.AboutDialog)Window).Run();
+            Logo = Program.Logo.ScaleSimple(128, 128, Gdk.InterpType.Bilinear);
+            Version = "v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
+
     }
 }
