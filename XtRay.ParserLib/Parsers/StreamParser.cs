@@ -17,7 +17,12 @@ namespace XtRay.ParserLib.Parsers
 {
     public class StreamParser : Parser
     {
-        private readonly int _maxParallelism = Environment.ProcessorCount;
+        private readonly int _maxParallelism =
+#if DEBUG
+            1;
+#else
+            Environment.ProcessorCount;
+#endif
         private readonly Stream _stream;
         private readonly object _parallelListLock = new object();
         private byte _format;
@@ -185,7 +190,7 @@ namespace XtRay.ParserLib.Parsers
             try
             {
                 CurrentLine++;
-                if (int.TryParse(parts[1], out var index)) 
+                if (!int.TryParse(parts[1], out var index))
                 {
                     Console.WriteLine("OOOPPPSSSS!!!!!");
                     return;
@@ -432,7 +437,7 @@ namespace XtRay.ParserLib.Parsers
                 throw new ParserException("File has too few lines. Expecting at least 6, 3 for header, 1 footer and at least one entry and one exit." + ex);
             }
             if (lines[0].IndexOf("Version: ", StringComparison.Ordinal) == 0
-                && lines[1].IndexOf("File format: ", StringComparison.Ordinal) == 0 
+                && lines[1].IndexOf("File format: ", StringComparison.Ordinal) == 0
                 && lines[2].IndexOf("TRACE START", StringComparison.Ordinal) == 0)
             {
                 _format = byte.Parse(lines[1].Replace("File format: ", ""));
