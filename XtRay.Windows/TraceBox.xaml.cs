@@ -84,8 +84,21 @@ namespace XtRay.Windows
             string[] parsed = new string[parameters.Length];
             for (var i = parameters.Length - 1; i >= 0; --i)
             {
-                var _tmp = parameters[i].Split(' ');
-                parsed[i] = _tmp[0];
+                if (!parameters[i].StartsWith("$"))
+                {
+                    if (parameters[i].Length > 20)
+                    {
+                        parsed[i] = "...";
+                    }
+                    else
+                    {
+                        parsed[i] = parameters[i];
+                    }
+                }
+                else
+                {
+                    parsed[i] = parameters[i].Split(' ')[0];
+                }
             }
             return string.Join(",",parsed);
         }
@@ -94,13 +107,13 @@ namespace XtRay.Windows
         {
             get
             {
-                return ReturnValue.Length > 50 ? "Dobule Click to Show Return Value" : ReturnValue;
+                return Trace.ReturnValue.Length > 80 ? "Dobule Click to Show Return Value" : Trace.ReturnValue;
             }
         }
 
         public string ReturnValueVisibility => Trace.ReturnValue?.Length > 0 ? "Visible" : "Hidden";
 
-        public string ReturnValue => Trace.ReturnValue ?? "";
+        public string ReturnValue => Trace.ReturnValue?.Length > 30 ? "..." : Trace.ReturnValue;
         public string FileInfo => Trace.File.Path + " @ L" + Trace.FileLine;
 
         public bool IsExpandable => Trace.Children.Length > 0;

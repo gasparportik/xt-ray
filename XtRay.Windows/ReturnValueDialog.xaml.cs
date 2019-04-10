@@ -4,10 +4,10 @@ namespace XtRay.Windows
 {
     public partial class ReturnValueDialog : Window
     {
-        public ReturnValueDialog(string parameters)
+        public ReturnValueDialog(string returnValue)
         {
             InitializeComponent();
-            ReturnValueTextBox.Text = parameters;
+            ReturnValueTextBox.Text = returnValue;
         }
     }
 }
