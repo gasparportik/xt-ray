@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace XtRay.Windows
 {
@@ -8,6 +9,14 @@ namespace XtRay.Windows
         {
             InitializeComponent();
             ParamTextBox.Text = string.Join("\r\n", parameters);
+            PreviewKeyDown += Dialog_KeyDown;
+        }
+        private void Dialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }
