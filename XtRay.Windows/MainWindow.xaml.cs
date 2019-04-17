@@ -38,15 +38,7 @@ namespace XtRay.Windows
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string text;
-            if (!SearchBox.Dispatcher.CheckAccess())
-            {
-                text = SearchBox.Dispatcher.Invoke(() => SearchBox.Text);
-            }
-            else
-            {
-                text = SearchBox.Text;
-            }
+            string text = !SearchBox.Dispatcher.CheckAccess() ? SearchBox.Dispatcher.Invoke(() => SearchBox.Text) : SearchBox.Text;
             rootNode.ApplyFilter(new CallNameFilter(text));
         }
 
@@ -55,6 +47,7 @@ namespace XtRay.Windows
             var parser = Parser.ParseFile(filename);
             TraceViewer.Content = traceBox = new TraceBox(parser.RootTrace) { ProfileInfoVisible = ProfileButton.IsChecked ?? false };
             rootNode = new FlexibleTraceNode(parser.RootTrace) { UiNode = traceBox };
+            SearchBox.Text = "";
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
