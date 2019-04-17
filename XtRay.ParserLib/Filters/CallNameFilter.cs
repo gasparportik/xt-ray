@@ -6,7 +6,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+ using System.Text.RegularExpressions;
+ using System.Threading.Tasks;
 
 namespace XtRay.Common.Filters
 {
@@ -14,18 +15,25 @@ namespace XtRay.Common.Filters
     public class CallNameFilter : ITraceFilter
     {
         private bool _exact = false;
+        // support RegExp search
+        private bool _regexp = false;
         private string _text;
 
         public CallNameFilter(string filterExpression)
         {
-            if (!string.IsNullOrEmpty(filterExpression) && filterExpression[0] == '=')
-            {
-                _exact = true;
-                _text = filterExpression.Substring(1);
-            }
-            else
+            if (!string.IsNullOrEmpty(filterExpression))
             {
                 _text = filterExpression;
+                if (filterExpression[0] == '=')
+                {
+                    _exact = true;
+                    _text = filterExpression.Substring(1);
+                }
+                else if (filterExpression[0] == '/')
+                {
+                    _regexp = true;
+                    _text = filterExpression.Substring(1);
+                }
             }
         }
 
@@ -35,7 +43,18 @@ namespace XtRay.Common.Filters
             {
                 return true;
             }
-            return _exact ? trace.Call.Name == _text : trace.Call.Name.Contains(_text);
+
+            if (_exact)
+            {
+                return trace.Call.Name == _text;
+            }
+
+            if (_regexp)
+            {
+                return Regex.IsMatch(trace.Call.Name, _text);
+            }
+            
+            return trace.Call.Name.Contains(_text);
         }
 
     }
