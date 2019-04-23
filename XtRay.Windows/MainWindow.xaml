@@ -26,7 +26,7 @@
                 </StackPanel>
                 <DockPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TextBox DockPanel.Dock="Right" x:Name="SearchBox" HorizontalAlignment="Right" TextAlignment="Left" Width="100" Visibility="Visible" Padding="4"></TextBox>
-                    <Label HorizontalAlignment="Right">Filter:</Label>
+                    <ComboBox Width="100" HorizontalAlignment="Right" x:Name="ComboBox"></ComboBox>
                 </DockPanel>
             </Grid>
         </Border>

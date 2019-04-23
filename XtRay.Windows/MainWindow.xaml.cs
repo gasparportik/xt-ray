@@ -4,10 +4,12 @@
 
 using Microsoft.Win32;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Threading.Tasks;
+using XtRay.Common.Abstractions;
 
 namespace XtRay.Windows
 {
@@ -19,12 +21,21 @@ namespace XtRay.Windows
     {
         private TraceBox traceBox;
         private FlexibleTraceNode rootNode;
+        #region Define parserList
+
+        private ObservableCollection<string> ParserList = new ObservableCollection<string>
+        {
+            "Function", "Parameter", "Return"
+        };
+
+        #endregion
 
         public MainWindow()
         {
             InitializeComponent();
-            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(444);
+            var textChanged = ((EventHandler<EventArgs>)ApplyFilterEvent).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
+            ComboBox.SelectionChanged += (s, e) => textChanged(s, e);
             // support get args from startup
             string[] args = Environment.GetCommandLineArgs();
             // index = 0 is the program self
@@ -34,12 +45,26 @@ namespace XtRay.Windows
             {
                 openFileWrapper(args[1]);
             }
+
+            ComboBox.ItemsSource = ParserList;
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ApplyFilterEvent(object sender, EventArgs e)
         {
+            int _index = !ComboBox.Dispatcher.CheckAccess() ? ComboBox.Dispatcher.Invoke(() => ComboBox.SelectedIndex) : ComboBox.SelectedIndex;
             string text = !SearchBox.Dispatcher.CheckAccess() ? SearchBox.Dispatcher.Invoke(() => SearchBox.Text) : SearchBox.Text;
-            rootNode.ApplyFilter(new CallNameFilter(text));
+            switch (_index)
+            {
+                case 0:
+                    rootNode.ApplyFilter(new CallNameFilter(text));
+                    break;
+                case 1:
+                    rootNode.ApplyFilter(new ParameterFilter(text));
+                    break;
+                case 2:
+                    rootNode.ApplyFilter(new ReturnValueFilter(text));
+                    break;
+            }
         }
 
         private void openFile(string filename)
@@ -118,4 +143,6 @@ namespace XtRay.Windows
             } 
         }
     }
+
+
 }
