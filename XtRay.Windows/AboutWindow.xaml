@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XtRay.Windows"
         mc:Ignorable="d"
-        Title="About XTV" Height="500" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="About Xt-Ray" Height="500" Width="450" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="Label">
             <Setter Property="Padding" Value="0" />

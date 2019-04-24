@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Threading;
 using System.Threading.Tasks;
-using XtRay.Common.Abstractions;
 using System.Reflection;
 using XtRay.ParserLib;
 using XtRay.ParserLib.Filters;
@@ -27,12 +26,11 @@ namespace XtRay.Windows
         private bool RunParsingInParallel = true;
         private string lastOpenFile;
         #region Define parserList
-
-        private ObservableCollection<string> ParserList = new ObservableCollection<string>
+        // TODO : I'm not sure how to Fix this stupid code TAT
+        private readonly ObservableCollection<string> _parserList = new ObservableCollection<string>
         {
             "Function", "Parameter", "Return"
         };
-
         #endregion
 
         public MainWindow()
@@ -40,6 +38,7 @@ namespace XtRay.Windows
             WindowTitle = "XtRay v" + Assembly.GetExecutingAssembly().GetName().Version;
             Title = WindowTitle;
             InitializeComponent();
+            // TODO : I merge that Event into one
             var textChanged = ((EventHandler<EventArgs>)ApplyFilterEvent).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
             ComboBox.SelectionChanged += (s, e) => textChanged(s, e);
@@ -50,14 +49,18 @@ namespace XtRay.Windows
                 openFileWrapper(args[1]);
             }
 
-            ComboBox.ItemsSource = ParserList;
+            // TODO : I'm not sure which way is better to bind this to ItemSource
+            ComboBox.ItemsSource = _parserList;
+            ComboBox.SelectedIndex = 0;
         }
 
         private void ApplyFilterEvent(object sender, EventArgs e)
         {
-            int _index = !ComboBox.Dispatcher.CheckAccess() ? ComboBox.Dispatcher.Invoke(() => ComboBox.SelectedIndex) : ComboBox.SelectedIndex;
+            int index = !ComboBox.Dispatcher.CheckAccess() ? ComboBox.Dispatcher.Invoke(() => ComboBox.SelectedIndex) : ComboBox.SelectedIndex;
             string text = !SearchBox.Dispatcher.CheckAccess() ? SearchBox.Dispatcher.Invoke(() => SearchBox.Text) : SearchBox.Text;
-            switch (_index)
+
+            // TODO : I'm not sure how to Fix this stupid code TAT
+            switch (index)
             {
                 case 0:
                     rootNode.ApplyFilter(new CallNameFilter(text));
@@ -73,7 +76,8 @@ namespace XtRay.Windows
 
         private void openFile(string filename)
         {
-            StatusLabel.Content = "Loading file: " + filename;
+            // Avoid the path or filename is tooooooo long
+            StatusLabel.Content = "Loading file: " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
             ParsingProgress.Visibility = Visibility.Visible;
             ParsingProgress.Value = 0;
             Task.Factory.StartNew(async () =>
@@ -99,7 +103,7 @@ namespace XtRay.Windows
                         StatusLabel.Content = $"Done parsing in {parseResult.ParseDuration}";
                         rootNode = new FlexibleTraceNode(parseResult.RootTrace) { UiNode = traceBox };
                         TraceViewer.Content = traceBox;
-                        Title = filename + " - " + WindowTitle;
+                        Title = WindowTitle + " - " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
                     }
                     catch (Exception ex)
                     {
@@ -108,6 +112,7 @@ namespace XtRay.Windows
                 });
             }, default, TaskCreationOptions.LongRunning, TaskScheduler.Current);
             lastOpenFile = filename;
+            // Clear the searchBox text when open a new file
             SearchBox.Text = "";
         }
 

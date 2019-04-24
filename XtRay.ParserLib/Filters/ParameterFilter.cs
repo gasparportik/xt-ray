@@ -1,14 +1,17 @@
-using System.Linq;
-using System.Text.RegularExpressions;
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-namespace XtRay.Common.Filters
+using System.Text.RegularExpressions;
+using XtRay.ParserLib.Abstractions;
+
+namespace XtRay.ParserLib.Filters
 {
-    using XtRay.Common.Abstractions;
     public class ParameterFilter : ITraceFilter
     {
-        // parameters not support Full Match
+        // I think parameter doesnt need Full Match
         // support RegExp search
-        private bool _regexp = false;
+        private readonly bool _regexp = false;
         private string _text;
 
         public ParameterFilter(string filterExpression)
@@ -29,17 +32,12 @@ namespace XtRay.Common.Filters
             {
                 return true;
             }
-
+            // CallName cant be none ,but others not
             if (trace.Parameters == null)
             {
                 return false;
             }
-            if (_regexp)
-            {
-                return Regex.IsMatch(string.Join("\n", trace.Parameters), _text);
-            }
-
-            return string.Join("\n", trace.Parameters).Contains(_text);
+            return _regexp ? Regex.IsMatch(string.Join("\n", trace.Parameters), _text) : string.Join("\n", trace.Parameters).Contains(_text);
         }
     }
 }
