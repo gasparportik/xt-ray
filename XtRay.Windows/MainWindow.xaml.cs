@@ -137,6 +137,10 @@ namespace XtRay.Windows
             {
                 openFile(lastOpenFile);
             }
+            else
+            {
+                MessageBox.Show("Please Open a file to Export");
+            }
         }
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
@@ -195,6 +199,12 @@ namespace XtRay.Windows
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
+            // when no file opened , it can export a json file contains a 'null'
+            if (parseResult == null)
+            {
+                MessageBox.Show("Please Open a file to Export");
+                return;
+            }
             var fd = new SaveFileDialog()
             {
                 DefaultExt = "xt.json",
