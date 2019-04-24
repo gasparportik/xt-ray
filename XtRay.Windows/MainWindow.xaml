@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:XtRay.Windows"
         mc:Ignorable="d"
         AllowDrop="True"
-        Title="Xdebug Trace Viewer" Height="550" Width="680">
+        Title="" Height="550" Width="680">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,6 +21,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
                     <Button Click="LoadButton_Click" Padding="15,5" Style="{x:Null}">Open File...</Button>
+                    <Button Click="ReloadButton_Click" Padding="15,5" Style="{x:Null}">Reload</Button>
+                    <Button Click="ExportButton_Click" Padding="15,5" Style="{x:Null}">Export...</Button>
+                    <ToggleButton x:Name="ParallelButton" Click="ParallelButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="True" Visibility="Collapsed">Parallel</ToggleButton>
                     <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
                     <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}">About</Button>
                 </StackPanel>
@@ -34,7 +37,8 @@
             <ScrollViewer Margin="6,0,0,0" x:Name="TraceViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
         <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ProgressBar Height="20"></ProgressBar>
+            <ProgressBar x:Name="ParsingProgress" Height="20" Visibility="Collapsed"></ProgressBar>
+            <Label x:Name="StatusLabel"></Label>
         </StackPanel>
     </Grid>
 </Window>

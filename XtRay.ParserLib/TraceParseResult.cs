@@ -10,13 +10,9 @@ using System.Threading.Tasks;
 
 namespace XtRay.ParserLib
 {
-    public class TraceFile
+    public abstract class TraceParseResult: TraceParseInfo
     {
-        public string Path { get; private set; }
+        public TimeSpan ParseDuration { get; internal set; }
 
-        public TraceFile(string path)
-        {
-            Path = path;
-        }
     }
 }

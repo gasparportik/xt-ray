@@ -4,3 +4,6 @@
 /*/obj/*
 *.user
 /dist/*
+/.idea
+*/Properties/launchSettings.json
+/*/publish/**

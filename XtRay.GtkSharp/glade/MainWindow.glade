@@ -1,86 +1,159 @@
-<?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="window1">
-    <property name="width_request">500</property>
-    <property name="height_request">350</property>
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.18"/>
+  <object class="GtkWindow" id="MainWindow">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Xdebug Tace Viewer</property>
-    <property name="visible">True</property>
-    <signal name="delete_event" handler="MainWindow_DeleteEvent" />
+    <property name="default_width">500</property>
+    <property name="default_height">350</property>
+    <signal name="delete-event" handler="MainWindow_DeleteEvent" swapped="no"/>
     <child>
-      <widget class="GtkVBox" id="vbox1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
+        <property name="can_focus">False</property>
         <child>
-          <widget class="GtkToolbar" id="toolbar1">
+          <object class="GtkHBox" id="toolbar1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="appToolbar"/>
+            </style>
             <child>
-              <widget class="GtkButton" id="OpenFileButton">
-                <property name="visible">True</property>
+              <object class="GtkButton" id="OpenFileButton">
                 <property name="label" translatable="yes">Open File...</property>
-                <property name="use_underline">True</property>
-                <signal name="clicked" handler="OpenFileButton_Clicked" />
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToggleButton" id="ShowProfileButton">
-                <property name="visible">False</property>
-                <property name="label" translatable="yes">Show Profile Info</property>
-                <property name="use_underline">True</property>
-                <signal name="click" handler="OpenFileButton_ClickEvent" />
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="AboutButton">
                 <property name="visible">True</property>
-                <property name="label">About</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
-                <signal name="clicked" handler="AboutButton_ClickEvent" />
-              </widget>
+                <signal name="clicked" handler="OpenFileButton_Clicked" swapped="no"/>
+              </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
               </packing>
             </child>
-          </widget>
+            <child>
+              <object class="GtkButton" id="ReloadFileButton">
+                <property name="label" translatable="yes">Reload</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="ReloadFileButton_Clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ExportFileButton">
+                <property name="label" translatable="yes">Export...</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="ExportFileButton_Clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="ShowProfileButton">
+                <property name="label" translatable="yes">Show Profile Info</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="AboutButton">
+                <property name="label">About</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="AboutButton_Clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkScrolledWindow" id="ScrollViewer">
+          <object class="GtkScrolledWindow" id="ScrollViewer">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="hscrollbar_policy">never</property>
             <property name="vscrollbar_policy">always</property>
+            <style>
+              <class name="traceViewer"/>
+            </style>
             <child>
               <placeholder/>
             </child>
-          </widget>
+          </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkToolbar" id="toolbar2">
+          <object class="GtkHBox" id="statusbar1">
             <property name="visible">True</property>
-          </widget>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="appStatusBar"/>
+            </style>
+            <child>
+              <object class="GtkLabel" id="statusbarText">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkProgressBar" id="loadingProgress">
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
           <packing>
             <property name="expand">False</property>
-            <property name="position">2</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

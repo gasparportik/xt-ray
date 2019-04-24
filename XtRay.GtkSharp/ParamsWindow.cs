@@ -2,47 +2,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+using Gtk;
+using UI = Gtk.Builder.ObjectAttribute;
+
 namespace XtRay.GtkSharp
 {
-    public class ParamsWindow : GladyWindow
+    public class ParamsWindow : Dialog
     {
-        private Gtk.ListStore treeModel;
+        private ListStore treeModel;
 
-        [Glade.Widget]
-        public Gtk.TreeView ParamsTree;
+        [UI]
+        public TreeView ParamsTree;
 
-        public ParamsWindow(string[] parameters) : base(Gtk.WindowType.Toplevel, "ParamsWindow")
+        private ParamsWindow(Builder builder) : base(builder.GetObject("ParamsWindow").Handle)
         {
-            ((Gtk.Dialog)Window).AddButton("gtk-close", Gtk.ResponseType.Cancel);
+            builder.Autoconnect(this);
+        }
 
+        public ParamsWindow(string[] parameters) : this(new Builder("ParamsWindow.glade"))
+        {
+            AddButton("gtk-close", ResponseType.Cancel);
 
-            treeModel = new Gtk.ListStore(typeof(int), typeof(string), typeof(string), typeof(string));
+            treeModel = new ListStore(typeof(int), typeof(string), typeof(string), typeof(string));
             ParamsTree.Model = treeModel;
 
 
-            var indexColumn = new Gtk.TreeViewColumn { Title = "Index" };
+            var indexColumn = new TreeViewColumn { Title = "Index" };
             ParamsTree.AppendColumn(indexColumn);
 
-            var nameColumn = new Gtk.TreeViewColumn { Title = "Name" };
+            var nameColumn = new TreeViewColumn { Title = "Name" };
             ParamsTree.AppendColumn(nameColumn);
 
-            var typeColumn = new Gtk.TreeViewColumn { Title = "Type" };
+            var typeColumn = new TreeViewColumn { Title = "Type" };
             ParamsTree.AppendColumn(typeColumn);
 
-            var dataColumn = new Gtk.TreeViewColumn { Title = "Data" };
+            var dataColumn = new TreeViewColumn { Title = "Data" };
             ParamsTree.AppendColumn(dataColumn);
 
 
-            var indexCell = new Gtk.CellRendererText();
+            var indexCell = new CellRendererText();
             indexColumn.PackStart(indexCell, true);
 
-            var nameCell = new Gtk.CellRendererText();
+            var nameCell = new CellRendererText();
             nameColumn.PackStart(nameCell, true);
 
-            var typeCell = new Gtk.CellRendererText();
+            var typeCell = new CellRendererText();
             typeColumn.PackStart(typeCell, true);
 
-            var dataCell = new Gtk.CellRendererText();
+            var dataCell = new CellRendererText();
             dataColumn.PackStart(dataCell, true);
 
 
@@ -59,13 +66,8 @@ namespace XtRay.GtkSharp
                 index++;
             }
 
-            Window.SetSizeRequest(500, System.Math.Min(500, 100 + index * 20));
+            SetSizeRequest(500, System.Math.Min(500, 100 + index * 20));
 
-        }
-
-        internal int Run()
-        {
-            return ((Gtk.Dialog)Window).Run();
         }
     }
 }

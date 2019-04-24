@@ -1,0 +1,53 @@
+﻿* {
+    font-family: "Segoe UI", Monospace;
+}
+
+window {
+    background-color: white;
+}
+
+.appToolbar {
+    background-color: #ccc;
+    margin: 10px;
+    box-shadow: 2px 2px 5px rgba(50,50,50,0.3);
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 10px;
+}
+
+    .appToolbar button {
+        /*background-color: blue;
+    background-image: none;
+    border-radius: 0;
+    border: 1px solid #666;*/
+    }
+
+.expanderButton {
+    border-radius: 50%;
+    background-image: none;
+    background-color: #ccc;
+    font-size: 0;
+    padding: 10px 15px;
+    margin-right: 10px;
+}
+
+    .expanderButton:disabled {
+        opacity: 0.5;
+    }
+
+/*button { }*/
+
+.traceViewer {
+    margin-left: 10px;
+}
+
+vbox, hbox, box {
+    background-color: transparent;
+}
+
+/*GtkButton,*/
+.appStatusBar {
+    background-image: -gtk-gradient(linear, left top, left bottom, color-stop(0.0,#e2e2e2), color-stop(0.7,#dbdbdb), color-stop(0.17,#d1d1d1), color-stop(1.00,#dbdbdb) );
+    border-top: 1px solid #777;
+    margin-top: 10px;
+}

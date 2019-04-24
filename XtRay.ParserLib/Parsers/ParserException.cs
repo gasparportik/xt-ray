@@ -4,13 +4,11 @@
 
 using System;
 
-namespace XtRay.Common.Parsers
+namespace XtRay.ParserLib.Parsers
 {
     public class ParserException : Exception
     {
-
         public ParserException(string message) : base(message) { }
         public ParserException(string message, Exception innerException) : base(message, innerException) { }
-
     }
 }

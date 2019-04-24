@@ -8,14 +8,16 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace XtRay.Common
+namespace XtRay.ParserLib
 {
     using Abstractions;
 
-    internal class Trace : ITrace
+    public class Trace : ITrace
     {
         private static readonly ITrace[] EmptyTraceArray = new ITrace[0];
-
+#if DEBUG
+        public string ADebugString => $"#{CallIndex} {Call?.Name} @{Level}";
+#endif
         public byte Level { get; internal set; }
         public uint CallIndex { get; internal set; }
         public TraceCall Call { get; internal set; }
@@ -32,6 +34,7 @@ namespace XtRay.Common
 
         public float TimeStart { get; internal set; }
         public float TimeEnd { get; internal set; }
+
         public ITrace[] Children { get; internal set; }
 
         public float SelfTime => TimeEnd - TimeStart - (Children?.Sum(x => x.CumulativeTime) ?? 0);
@@ -42,11 +45,15 @@ namespace XtRay.Common
 
         public float ParentTimePercent => _parent == null ? 0 : 100 * CumulativeTime / _parent.CumulativeTime;
 
-        private Trace _root;
+        internal uint SourceStartLine { get; set; }
+        internal uint SourceEndLine { get; set; }
+
+        private readonly Trace _root;
         private Trace _parent;
         private IList<Trace> _children;
 
         //
+        public Trace() { }
 
         internal Trace(Trace root = null, Trace parent = null)
         {
@@ -56,6 +63,7 @@ namespace XtRay.Common
 
         internal void AppendChild(Trace child)
         {
+            child._parent = this;
             if (_children == null)
             {
                 _children = new List<Trace>();

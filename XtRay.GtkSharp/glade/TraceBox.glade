@@ -1,104 +1,32 @@
-<?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkHBox" id="TraceContainer">
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.18"/>
+  <object class="GtkHBox" id="TraceBox">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <child>
-      <widget class="GtkVBox" id="vbox1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
+        <property name="can_focus">False</property>
         <child>
-          <widget class="GtkToggleButton" id="ExpandButton">
-            <property name="label" translatable="yes">+</property>
+          <object class="GtkToggleButton" id="ExpandButton">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="width_request">30</property>
-            <property name="height_request">30</property>
             <property name="receives_default">True</property>
-            <signal name="clicked" handler="ToggleButton_Clicked" />
-          </widget>
-          <packing>
-            <property name="fill">False</property>
-            <property name="expand">false</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkDrawingArea" id="Canvas">
-            <property name="visible">True</property>
-          </widget>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </widget>
-      <packing>
-        <property name="expand">False</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-    <child>
-      <widget class="GtkVBox" id="vbox2">
-        <property name="visible">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <widget class="GtkTable" id="table1">
-            <property name="visible">True</property>
-            <property name="n_columns">4</property>
+            <property name="relief">none</property>
+            <property name="draw_indicator">True</property>
+            <style>
+              <class name="expanderButton"/>
+            </style>
+            <signal name="clicked" handler="ToggleButton_Clicked" swapped="no"/>
             <child>
-              <widget class="GtkLabel" id="CallLabel">
+              <object class="GtkImage" id="ExpandButtonIcon">
                 <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">label</property>
-              </widget>
-              <packing>
-                <property name="x_options"></property>
-                <property name="y_options"></property>
-              </packing>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-add</property>
+              </object>
             </child>
-            <child>
-              <widget class="GtkEventBox" id="ParamsEventBox">
-                <property name="visible">True</property>
-                <signal name="button_press_event" handler="ParamsLabelAction"/>
-                <signal name="realize" handler="ParamsRealize"/>
-                <child>
-                  <widget class="GtkLabel" id="ParametersLabel">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">label dnsajk ndska ndsjkandjksnadjk ndsjkan kjdnskja ndjksnakj ndsjkan jkdnskja ndjksna jkdnsjka ndjksand jksnakdj nskja </property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">)</property>
-              </widget>
-              <packing>
-                <property name="left_attach">2</property>
-                <property name="right_attach">3</property>
-                <property name="x_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkDrawingArea" id="drawingarea1">
-                <property name="visible">True</property>
-                <property name="width_request">50</property>
-              </widget>
-              <packing>
-                <property name="left_attach">3</property>
-                <property name="right_attach">4</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -106,31 +34,129 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkLabel" id="FileLabel">
+          <object class="GtkDrawingArea" id="Canvas">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkVBox" id="vbox2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkTable" id="table1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="n_columns">4</property>
+            <child>
+              <object class="GtkLabel" id="CallLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+              <packing>
+                <property name="x_options"/>
+                <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEventBox" id="ParamsEventBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <signal name="button-press-event" handler="ParamsLabelAction" swapped="no"/>
+                <signal name="realize" handler="ParamsRealize" swapped="no"/>
+                <child>
+                  <object class="GtkLabel" id="ParametersLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">label dnsajk ndska ndsjkandjksnadjk ndsjkan kjdnskja ndjksnakj ndsjkan jkdnskja ndjksna jkdnsjka ndjksand jksnakdj nskja </property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">)</property>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="x_options"/>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkDrawingArea" id="drawingarea1">
+                <property name="width_request">50</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="y_options"/>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="FileLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">label</property>
-          </widget>
+          </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkVBox" id="Children">
+          <object class="GtkVBox" id="Children">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+            <property name="can_focus">False</property>
             <child>
-              <placeholder />
+              <placeholder/>
             </child>
-          </widget>
+          </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">2</property>
           </packing>
         </child>
-      </widget>
+      </object>
       <packing>
         <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
       </packing>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace XtRay.ParserLib
 {
-    public class TraceFile
+    public class TraceParseInfo
     {
-        public string Path { get; private set; }
-
-        public TraceFile(string path)
-        {
-            Path = path;
-        }
+        public string XdebugVersion { get; internal set; }
+        public uint TraceLines { get; internal set; }
+        public byte TraceFormat { get; internal set; }
+        public DateTime TraceDate { get; internal set; }
     }
 }

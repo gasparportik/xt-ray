@@ -5,9 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
-namespace XtRay.Common.Abstractions
+namespace XtRay.ParserLib.Abstractions
 {
     public interface ITraceUiNode : INotifyPropertyChanged, IDisposable
     {

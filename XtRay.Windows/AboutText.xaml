@@ -4,7 +4,7 @@
     <Section FontFamily="Segoe UI">
         <Paragraph>
             Feel free to file issues under and submit pull requests at the github page:
-            <Hyperlink NavigateUri="https://github.com/boykathemad/xt-ray">boykathemad/xt-ray</Hyperlink>
+            <Hyperlink NavigateUri="https://github.com/gasparportik/xt-ray">gasparportik/xt-ray</Hyperlink>
         </Paragraph>
         <Paragraph>
             Contributors:
@@ -12,7 +12,7 @@
         <List>
             <ListItem>
                 <Paragraph>
-                    <Hyperlink NavigateUri="http://github.com/boykathemad">BoykaTheMad</Hyperlink>
+                    <Hyperlink NavigateUri="http://github.com/gasparportik">Gaspar Portik(BoykaTheMad)</Hyperlink>
                 </Paragraph>
             </ListItem>
             <ListItem>

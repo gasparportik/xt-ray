@@ -1,28 +1,25 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkAboutDialog" id="window1">
+<interface>
+  <requires lib="gtk+" version="3.18"/>
+  <object class="GtkAboutDialog" id="AboutWindow">
     <property name="border_width">5</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <property name="program_name">Xt-Ray (Gtk#)</property>
     <!--<property name="version">completed programmatically</property>-->
-    <property name="copyright" translatable="yes">© 2017 Xt-Ray contributors</property>
+    <property name="copyright" translatable="yes">© 2019 Xt-Ray contributors</property>
     <property name="comments" translatable="yes">An xdebug trace file viewer</property>
-    <property name="website">https://github.com/boykathemad/xdebug-trace-viewer</property>
-    <property name="website_label" translatable="yes">github: boykathemad/xt-ray</property>
+    <property name="website">https://github.com/gasparportik/xt-ray</property>
+    <property name="website_label" translatable="yes">github: gasparportik/xt-ray</property>
     <property name="license" translatable="yes">
       This Source Code Form is subject to the terms of the Mozilla Public
       License, v. 2.0. If a copy of the MPL was not distributed with this
       file, You can obtain one at http://mozilla.org/MPL/2.0/.
     </property>
-    <!--<property name="authors">not really needed</property>-->
-    <!--<property name="logo">TODO: make this work</property>-->
+    <property name="authors">Gaspar Portik</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
@@ -30,18 +27,18 @@
           <placeholder/>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>
 
