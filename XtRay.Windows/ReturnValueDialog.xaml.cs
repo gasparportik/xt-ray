@@ -24,6 +24,12 @@ namespace XtRay.Windows
             {
                 Close();
             }
+            // TODO : make another way to parse phpValue
+            if (e.Key == Key.F)
+            {
+                returnValue.Parse();
+                ReturnValueTextBox.Text = returnValue.ToString();
+            }
         }
     }
 }

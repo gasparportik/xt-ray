@@ -28,6 +28,15 @@ namespace XtRay.Windows
             {
                 Close();
             }
+            // TODO : make another way to parse phpValue
+            if (e.Key == Key.F)
+            {
+                foreach (PHPValue param in Params)
+                {
+                    param.Parse();
+                }
+                ParamTextBox.Text = string.Join("\n",Params);
+            }
         }
     }
 }

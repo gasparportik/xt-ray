@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Parameter inspector" Height="300" Width="500" WindowStartupLocation="CenterOwner">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <TextBox TextWrapping="Wrap" x:Name="ParamTextBox"></TextBox>
+        <TextBox TextWrapping="Wrap" IsReadOnly="True" x:Name="ParamTextBox"></TextBox>
     </ScrollViewer>
 </Window>
