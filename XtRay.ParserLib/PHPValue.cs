@@ -18,6 +18,7 @@ namespace XtRay.ParserLib
             // tabs
             string tabs = "";
             // a ' is passed(means after this is a string)
+            // in xdebug string must be quoted with ''
             bool quoteStart = false;
             // a \ is passed(means after this need to be convert)
             bool flippedSlash = false;
@@ -25,13 +26,15 @@ namespace XtRay.ParserLib
             bool isNewLine = false;
             foreach (char c in Value)
             {
+                // if the char need to convert
                 if (flippedSlash)
                 {
+                    // just add and do next
                     ParsedValue += c;
                     flippedSlash = false;
                     continue;
                 }
-
+                // if the char in quote
                 if (quoteStart)
                 {
                     ParsedValue += c;
@@ -74,11 +77,13 @@ namespace XtRay.ParserLib
                         }
                         break;
                     case ' ':
+                        // don't change anything with a space
                         ParsedValue += c;
                         break;
                     default:
                         quoteStart = c=='\'';
                         flippedSlash = c=='\\';
+                        // if this char is not special just give a new line to it
                         if (isNewLine)
                         {
                             isNewLine = false;
