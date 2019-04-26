@@ -15,6 +15,11 @@ namespace XtRay.ParserLib
         // I dont know how to TAT
         public void Parse()
         {
+            // avoid duplicated parse
+            if (isParsed)
+            {
+                return;
+            }
             // tabs
             string tabs = "";
             // a ' is passed(means after this is a string)
@@ -95,6 +100,11 @@ namespace XtRay.ParserLib
             }
 
             isParsed = true;
+        }
+
+        public void UnParse()
+        {
+            isParsed = false;
         }
         
         public override string ToString()
