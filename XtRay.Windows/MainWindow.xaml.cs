@@ -139,7 +139,7 @@ namespace XtRay.Windows
             }
             else
             {
-                MessageBox.Show("Please Open a file to Export");
+                MessageBox.Show("Please Open a file so You Can Reload");
             }
         }
 
