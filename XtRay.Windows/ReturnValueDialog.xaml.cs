@@ -4,15 +4,18 @@
 
 using System.Windows;
 using System.Windows.Input;
+using XtRay.ParserLib;
 
 namespace XtRay.Windows
 {
     public partial class ReturnValueDialog : Window
     {
+        private PHPValue returnValue;
         public ReturnValueDialog(string parameters)
         {
             InitializeComponent();
-            ReturnValueTextBox.Text = parameters;
+            returnValue = new PHPValue(parameters);
+            ReturnValueTextBox.Text = returnValue.ToString();
             PreviewKeyDown += Dialog_KeyDown;
         }
         private void Dialog_KeyDown(object sender, KeyEventArgs e)
