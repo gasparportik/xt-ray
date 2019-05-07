@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XtRay.Windows"
         mc:Ignorable="d"
-        Title="Returned Value inspector" Height="300" Width="500" WindowStartupLocation="CenterOwner">
+        Title="Return Value inspector" Height="300" Width="500" WindowStartupLocation="CenterOwner">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <TextBox TextWrapping="Wrap" x:Name="ReturnValueTextBox"></TextBox>
+        <TextBox TextWrapping="Wrap" IsReadOnly="True" x:Name="ReturnValueTextBox"></TextBox>
     </ScrollViewer>
 </Window>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:XtRay.Windows"
         mc:Ignorable="d"
         AllowDrop="True"
-        Title="" Height="550" Width="680">
+        Title="Xt-Ray" Height="550" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,16 +20,17 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
-                    <Button Click="LoadButton_Click" Padding="15,5" Style="{x:Null}">Open File...</Button>
-                    <Button Click="ReloadButton_Click" Padding="15,5" Style="{x:Null}">Reload</Button>
-                    <Button Click="ExportButton_Click" Padding="15,5" Style="{x:Null}">Export...</Button>
-                    <ToggleButton x:Name="ParallelButton" Click="ParallelButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="True" Visibility="Collapsed">Parallel</ToggleButton>
-                    <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
-                    <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="15,5" Style="{x:Null}">About</Button>
+                    <Button Click="LoadButton_Click" Padding="10,5" Style="{x:Null}">Open File...</Button>
+                    <Button Click="ReloadButton_Click" Padding="10,5" Style="{x:Null}">Reload</Button>
+                    <Button Click="ExportButton_Click" Padding="10,5" Style="{x:Null}">Export...</Button>
+                    <ToggleButton x:Name="ParallelButton" Click="ParallelButton_Click" Margin="10,0,0,0" Padding="10,5" Style="{x:Null}" IsChecked="True" Visibility="Collapsed">Parallel</ToggleButton>
+                    <ToggleButton x:Name="ProfileButton" Click="ProfileButton_Click" Margin="10,0,0,0" Padding="10,5" Style="{x:Null}" IsChecked="False">Show Profile Info</ToggleButton>
+                    <Button Click="AboutButton_Click" Margin="10,0,0,0" Padding="10,5" Style="{x:Null}">About</Button>
                 </StackPanel>
                 <DockPanel Grid.Column="1" Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock HorizontalAlignment="Right" Text="Filter By:" Padding="5,5"></TextBlock>
+                    <ComboBox Width="90" HorizontalAlignment="Right" x:Name="ComboBox" Padding="5,5"></ComboBox>
                     <TextBox DockPanel.Dock="Right" x:Name="SearchBox" HorizontalAlignment="Right" TextAlignment="Left" Width="100" Visibility="Visible" Padding="4"></TextBox>
-                    <Label HorizontalAlignment="Right">Filter:</Label>
                 </DockPanel>
             </Grid>
         </Border>

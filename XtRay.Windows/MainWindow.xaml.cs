@@ -4,6 +4,7 @@
 
 using Microsoft.Win32;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,13 +25,20 @@ namespace XtRay.Windows
         private bool ProfileInfoVisible = false;
         private bool RunParsingInParallel = true;
         private string lastOpenFile;
+        #region Define parserList
+        // TODO : I'm not sure how to Fix this stupid code TAT
+        private readonly ObservableCollection<string> _parserList = new ObservableCollection<string>
+        {
+            "Function", "Parameter", "Return"
+        };
+        #endregion
 
         public MainWindow()
         {
             WindowTitle = "XtRay v" + Assembly.GetExecutingAssembly().GetName().Version;
             InitializeComponent();
             Title = WindowTitle;
-            var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(444);
+            var textChanged = ((EventHandler<EventArgs>)ApplyFilterEvent).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
             // support get args from startup
             string[] args = Environment.GetCommandLineArgs();
@@ -38,25 +46,37 @@ namespace XtRay.Windows
             {
                 openFileWrapper(args[1]);
             }
+
+            // TODO : I'm not sure which way is better to bind this to ItemSource
+            ComboBox.ItemsSource = _parserList;
+            ComboBox.SelectedIndex = 0;
+            ComboBox.SelectionChanged += (s, e) => textChanged(s, e);
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ApplyFilterEvent(object sender, EventArgs e)
         {
-            string text;
-            if (!SearchBox.Dispatcher.CheckAccess())
+            int index = !ComboBox.Dispatcher.CheckAccess() ? ComboBox.Dispatcher.Invoke(() => ComboBox.SelectedIndex) : ComboBox.SelectedIndex;
+            string text = !SearchBox.Dispatcher.CheckAccess() ? SearchBox.Dispatcher.Invoke(() => SearchBox.Text) : SearchBox.Text;
+
+            // TODO : I'm not sure how to Fix this stupid code TAT
+            switch (index)
             {
-                text = SearchBox.Dispatcher.Invoke(() => SearchBox.Text);
+                case 0:
+                    rootNode.ApplyFilter(new CallNameFilter(text));
+                    break;
+                case 1:
+                    rootNode.ApplyFilter(new ParameterFilter(text));
+                    break;
+                case 2:
+                    rootNode.ApplyFilter(new ReturnValueFilter(text));
+                    break;
             }
-            else
-            {
-                text = SearchBox.Text;
-            }
-            rootNode.ApplyFilter(new CallNameFilter(text));
         }
 
         private void openFile(string filename)
         {
-            StatusLabel.Content = "Loading file: " + filename;
+            // Avoid the path or filename is tooooooo long
+            StatusLabel.Content = "Loading file: " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
             ParsingProgress.Visibility = Visibility.Visible;
             ParsingProgress.Value = 0;
             Task.Factory.StartNew(async () =>
@@ -82,7 +102,7 @@ namespace XtRay.Windows
                         StatusLabel.Content = $"Done parsing in {parseResult.ParseDuration}";
                         rootNode = new FlexibleTraceNode(parseResult.RootTrace) { UiNode = traceBox };
                         TraceViewer.Content = traceBox;
-                        Title = filename + " - " + WindowTitle;
+                        Title = WindowTitle + " - " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
                     }
                     catch (Exception ex)
                     {
@@ -91,6 +111,8 @@ namespace XtRay.Windows
                 });
             }, default, TaskCreationOptions.LongRunning, TaskScheduler.Current);
             lastOpenFile = filename;
+            // Clear the searchBox text when open a new file
+            SearchBox.Text = "";
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
@@ -113,6 +135,10 @@ namespace XtRay.Windows
             if (!string.IsNullOrEmpty(lastOpenFile))
             {
                 openFile(lastOpenFile);
+            }
+            else
+            {
+                MessageBox.Show("Please Open a file so You Can Reload");
             }
         }
 
@@ -172,6 +198,12 @@ namespace XtRay.Windows
 
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
+            // when no file opened , it can export a json file contains a 'null'
+            if (parseResult == null)
+            {
+                MessageBox.Show("Please Open a file to Export");
+                return;
+            }
             var fd = new SaveFileDialog()
             {
                 DefaultExt = "xt.json",
