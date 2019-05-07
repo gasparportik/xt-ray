@@ -36,9 +36,8 @@ namespace XtRay.Windows
         public MainWindow()
         {
             WindowTitle = "XtRay v" + Assembly.GetExecutingAssembly().GetName().Version;
-            Title = WindowTitle;
             InitializeComponent();
-            // TODO : I merge that Event into one
+            Title = WindowTitle;
             var textChanged = ((EventHandler<EventArgs>)ApplyFilterEvent).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
             // support get args from startup

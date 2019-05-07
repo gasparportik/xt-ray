@@ -1,0 +1,15 @@
+###############################################################################
+# Set default behavior to automatically normalize line endings.
+###############################################################################
+* text=auto
+
+# Project and solution files
+*.sln     text eol=crlf
+*.csproj  text eol=crlf
+*.wapproj text eol=crlf
+*.targets text eol=crlf
+
+# Source code files
+*.cs     text eol=crlf
+*.xaml   text eol=crlf
+*.config text eol=crlf
