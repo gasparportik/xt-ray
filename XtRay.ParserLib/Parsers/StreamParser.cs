@@ -17,6 +17,7 @@ namespace XtRay.ParserLib.Parsers
 {
     public class StreamParser : Parser
     {
+        private static readonly Version VERSION_2_6 = new Version(2, 6);
         private readonly int _maxParallelism =
 #if DEBUG
             1;
@@ -26,7 +27,8 @@ namespace XtRay.ParserLib.Parsers
         private readonly Stream _stream;
         private readonly object _parallelListLock = new object();
         private byte _format;
-        private string _version;
+        private string _versionString;
+        private Version _version;
         private DateTime _date;
         private Stack<Trace> _stack;
         private Trace _last;
@@ -49,7 +51,7 @@ namespace XtRay.ParserLib.Parsers
             await Task.Delay(1);
             return new TraceParseInfo
             {
-                XdebugVersion = _version,
+                XdebugVersion = _versionString,
                 TraceFormat = _format,
                 TraceLines = LineCount,
                 TraceDate = _date
@@ -106,6 +108,16 @@ namespace XtRay.ParserLib.Parsers
             }
         }
 
+        private void PostParseActions()
+        {
+            _rootTrace.TimeEnd = _rootTrace.Children.Sum(x => x.CumulativeTime);
+            if (_version >= VERSION_2_6 && _rootTrace.Children.Length == 1)
+            {
+                _rootTrace = _rootTrace.Children[0] as Trace;
+                //_rootTrace._parent = null;
+            }
+        }
+
         private async Task ParseLinear()
         {
             _rootTrace = CreateRootTrace();
@@ -124,6 +136,7 @@ namespace XtRay.ParserLib.Parsers
             {
                 _stack.Pop().DoneParsing();
             }
+            PostParseActions();
             _result = new TraceTree { RootTrace = _rootTrace };
         }
 
@@ -136,6 +149,7 @@ namespace XtRay.ParserLib.Parsers
             if (Options.ParseAsTree)
             {
                 BuildTreeFromList();
+                PostParseActions();
                 _result = new TraceTree { RootTrace = _rootTrace };
             }
             else
@@ -175,6 +189,7 @@ namespace XtRay.ParserLib.Parsers
             if (Options.ParseAsTree)
             {
                 BuildTreeFromList();
+                PostParseActions();
                 _result = new TraceTree { RootTrace = _rootTrace };
             }
             else
@@ -445,8 +460,12 @@ namespace XtRay.ParserLib.Parsers
                 {
                     throw new ParserException("Invalid 'File format' in header. Either a value of 4 or 2 is expected/supported.");
                 }
-                _version = lines[0].Replace("Version: ", "");
-                if (!DateTime.TryParseExact(_version = lines[0].Replace("TRACE START ", ""), "[yyyy-MM-dd HH:mm:ss]", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out _date))
+                _versionString = lines[0].Replace("Version: ", "");
+                if (!Version.TryParse(_versionString, out _version))
+                {
+                    _version = new Version(2, 0, 0);
+                }
+                if (!DateTime.TryParseExact(lines[2].Replace("TRACE START ", ""), "[yyyy-MM-dd HH:mm:ss]", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out _date))
                 {
                     _date = DateTime.Now;
                 }
@@ -490,7 +509,7 @@ namespace XtRay.ParserLib.Parsers
 
         public override string GetInfo()
         {
-            return $"Parser running in mode {_format}/{_version}";
+            return $"Parser running in mode {_format}/{_versionString}";
         }
 
     }
