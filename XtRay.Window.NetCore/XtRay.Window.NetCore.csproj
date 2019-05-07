@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationIcon>..\XtRay.Windows\Resources\app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\XtRay.Windows\**\*.cs" Exclude="..\XtRay.Windows\obj\**\*" />
+    <!--<EmbeddedResource Include="..\XtRay.Windows\**\*.resx" />-->
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="..\XtRay.Windows\App.xaml" Link="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <!--<Compile Include="..\XtRay.Windows\App.xaml.cs" Link="App.xaml.cs" />-->
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\XtRay.Windows\MainWindow.xaml" Link="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\XtRay.Windows\AboutWindow.xaml" Link="AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\XtRay.Windows\ParamsDialog.xaml" Link="ParamsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\XtRay.Windows\ReturnValueDialog.xaml" Link="ReturnValueDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\XtRay.Windows\TraceBox.xaml" Link="TraceBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\Xtray.Windows\Resources\Themes\CustomStyles.xaml" Link="Resources\Themes\CustomStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\XtRay.Windows\Resources\app.png" Link="Resources\app.png" />
+    <Resource Include="..\XtRay.Windows\AboutText.xaml" Link="AboutText.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XtRay.ParserLib\XtRay.ParserLib.csproj" />
+  </ItemGroup>
+</Project>
