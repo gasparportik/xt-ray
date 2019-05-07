@@ -28,8 +28,8 @@ namespace XtRay.Windows
         public MainWindow()
         {
             WindowTitle = "XtRay v" + Assembly.GetExecutingAssembly().GetName().Version;
-            Title = WindowTitle;
             InitializeComponent();
+            Title = WindowTitle;
             var textChanged = ((EventHandler<TextChangedEventArgs>)SearchBox_TextChanged).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
             // support get args from startup
