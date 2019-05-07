@@ -41,7 +41,6 @@ namespace XtRay.Windows
             // TODO : I merge that Event into one
             var textChanged = ((EventHandler<EventArgs>)ApplyFilterEvent).Debounce(444);
             SearchBox.TextChanged += (s, e) => textChanged(s, e);
-            ComboBox.SelectionChanged += (s, e) => textChanged(s, e);
             // support get args from startup
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1 && File.Exists(args[1]))
@@ -52,6 +51,7 @@ namespace XtRay.Windows
             // TODO : I'm not sure which way is better to bind this to ItemSource
             ComboBox.ItemsSource = _parserList;
             ComboBox.SelectedIndex = 0;
+            ComboBox.SelectionChanged += (s, e) => textChanged(s, e);
         }
 
         private void ApplyFilterEvent(object sender, EventArgs e)
