@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         AllowDrop="True"
         Title="Xt-Ray" Height="550" Width="800">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo></TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -38,7 +41,7 @@
             <ScrollViewer Margin="6,0,0,0" x:Name="TraceViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
         <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ProgressBar x:Name="ParsingProgress" Height="20" Visibility="Collapsed"></ProgressBar>
+            <ProgressBar x:Name="ParsingProgress" Height="20" Maximum="100" Visibility="Collapsed"></ProgressBar>
             <Label x:Name="StatusLabel"></Label>
         </StackPanel>
     </Grid>

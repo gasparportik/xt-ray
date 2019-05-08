@@ -14,8 +14,25 @@ using XtRay.ParserLib.Abstractions;
 
 namespace XtRay.Windows
 {
-    public partial class TraceBox : UserControl, ITraceUiNode
+    public partial class TraceBox : UserControl, ITraceUiNode, ITraceViewModel
     {
+
+        private static string FormatTimeConcisely(double time)
+        {
+            if (time > 1)
+            {
+                // display as seconds
+                return string.Format("{0:0.00}s", time);
+            }
+            if (time > 0.001)
+            {
+                // display as milliseconds
+                return string.Format("{0:0.00}ms", time * 1000);
+            }
+            // display as microseconds
+            return string.Format("{0:D}\u03bcs", (int)Math.Round(time * 1000000));
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
@@ -148,7 +165,10 @@ namespace XtRay.Windows
         }
         public Visibility ProfileInfoVisibility => _profileDataVisible ? Visibility.Visible : Visibility.Collapsed;
 
-        public string TimingInfo => string.Format("{0:0.000}ms / {1:0.000}ms", Trace.SelfTime * 1000, Trace.CumulativeTime * 1000);
+        // TODO: add a setting to switch between concise display and millisecond display
+        public string SelfTimeFormatted => FormatTimeConcisely(Trace.SelfTime);
+
+        public string CumulativeTimeFormatted => FormatTimeConcisely(Trace.CumulativeTime);
 
         public double TotalTimingPercent => Trace.TimePercent;
 

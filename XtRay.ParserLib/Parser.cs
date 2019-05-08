@@ -15,8 +15,10 @@ namespace XtRay.ParserLib
     public abstract class Parser
     {
         protected ParserOptions Options;
-        public uint LineCount { get; protected set; }
-        public uint CurrentLine { get; protected set; }
+        public uint SourceLineCount { get; protected set; }
+        protected uint CurrentLine {get; set; }
+        abstract public double ParsingProgress { get; }
+        public uint SourceLengthBytes { get; protected set; }
         private readonly ConcurrentDictionary<string, TraceFile> fileMap = new ConcurrentDictionary<string, TraceFile>();
         private readonly ConcurrentDictionary<string, TraceCall> callMap = new ConcurrentDictionary<string, TraceCall>();
 

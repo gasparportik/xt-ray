@@ -71,6 +71,7 @@
     <Compile Include="ReturnValueDialog.xaml.cs">
       <DependentUpon>ReturnValueDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ITraceViewModel.cs" />
     <Compile Include="TraceBox.xaml.cs">
       <DependentUpon>TraceBox.xaml</DependentUpon>
     </Compile>
@@ -83,7 +84,7 @@
     <Compile Include="BoolToVisibilityConverter.cs" />
     <Compile Include="PercentToHeatConverter.cs" />
     <Compile Include="BoolToBoldnessConverter.cs" />
-    <Compile Include="TraceViewModel.cs" />
+    <Compile Include="SampleTraceViewModel.cs" />
     <Resource Include="AboutText.xaml">
       <SubType>Designer</SubType>
     </Resource>

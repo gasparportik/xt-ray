@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:XtRay.Windows"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=local:TraceViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=local:SampleTraceViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="100" d:DesignWidth="300">
     <UserControl.Resources>
         <local:BoolToBoldnessConverter x:Key="BoolToBold" />
@@ -66,8 +66,12 @@
             <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding FileInfo}" FontSize="11" Margin="0,-3,0,0"></TextBlock>
             <StackPanel Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding ProfileInfoVisibility}" MinWidth="100" Margin="0,6,0,0">
                 <ProgressBar Value="{Binding ParentTimingPercent, Mode=OneTime}" Margin="0,0,0,1" BorderThickness="0" Height="3" Background="Black" Foreground="{Binding ParentTimingPercent, Converter={StaticResource PercentToHeat}}" />
-                <TextBlock Text="{Binding TimingInfo}" FontSize="10" />
+                <DockPanel>
+                    <TextBlock FontSize="10" Text="{Binding SelfTimeFormatted, Mode=OneTime}"></TextBlock>  <TextBlock FontSize="10"  Text="{Binding CumulativeTimeFormatted, Mode=OneTime}" TextAlignment="Right"></TextBlock>
+                </DockPanel>
                 <ProgressBar Value="{Binding TotalTimingPercent, Mode=OneTime}" FlowDirection="RightToLeft" BorderThickness="0" Height="3" Background="Black" Foreground="{Binding TotalTimingPercent, Converter={StaticResource PercentToHeat}}" />
+                <!--<TextBlock Text="{Binding TimingInfo}" FontSize="10" />-->
+                <!-- TODO: add memory values -->
             </StackPanel>
         </Grid>
         <ToggleButton Grid.Row="0" IsEnabled="{Binding IsExpandable}" IsChecked="{Binding IsExpanded, Mode=TwoWay}" PreviewKeyDown="ExpandButton_PreviewKeyDown" VerticalAlignment="Center" Width="20" Height="20" Margin="2"></ToggleButton>

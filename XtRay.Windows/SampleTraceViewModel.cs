@@ -7,7 +7,8 @@ using System.Windows.Media;
 
 namespace XtRay.Windows
 {
-    public class TraceViewModel
+    // This is only used to feed useful data to the TraceBox Designer
+    public class SampleTraceViewModel : ITraceViewModel
     {
         public string Call { get; } = "file_get_contents";
         public bool HasParameters { get; } = true;
@@ -19,7 +20,8 @@ namespace XtRay.Windows
         public bool IsExpanded { get; set; } = true;
         public Visibility Expanded { get; } = Visibility.Visible;
         public Visibility ProfileInfoVisibility { get; } = Visibility.Visible;
-        public string TimingInfo { get; } = "0.34ms / 13.66ms";
+        public string SelfTimeFormatted { get; } = "0.34ms";
+        public string CumulativeTimeFormatted { get; } = "1.3s";
         public double TotalTimingPercent { get; } = 65f;
         public double ParentTimingPercent { get; } = 25f;
     }

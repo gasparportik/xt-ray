@@ -76,9 +76,7 @@ namespace XtRay.Windows
         private void openFile(string filename)
         {
             // Avoid the path or filename is tooooooo long
-            StatusLabel.Content = "Loading file: " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
-            ParsingProgress.Visibility = Visibility.Visible;
-            ParsingProgress.Value = 0;
+            StatusLabel.Content = "Loading file: " + filename.Ellipsize(100, true);
             Task.Factory.StartNew(async () =>
             {
                 var options = new ParserOptions
@@ -87,22 +85,22 @@ namespace XtRay.Windows
                     Parallel = RunParsingInParallel
                 };
                 var parser = Parser.FromFile(filename, options);
+                SetProgress(0);
                 await parser.PreParseAsync();
-                Dispatcher.Invoke(() => ParsingProgress.Maximum = parser.LineCount);
-                using (var t = new Timer((s) => { Dispatcher.Invoke(() => ParsingProgress.Value = parser.CurrentLine); }, null, 1, 100))
+                using (var t = new Timer((s) => SetProgress(parser.ParsingProgress), null, 1, 100))
                 {
                     parseResult = await parser.ParseAsync() as TraceTree;
-                    Dispatcher.Invoke(() => ParsingProgress.Visibility = Visibility.Collapsed);
+                    SetProgress(100);
                 }
                 Dispatcher.Invoke(() =>
                 {
                     try
                     {
                         traceBox = new TraceBox(parseResult.RootTrace) { ProfileInfoVisible = ProfileButton.IsChecked ?? false };
-                        StatusLabel.Content = $"Done parsing in {parseResult.ParseDuration}";
+                        StatusLabel.Content = $"Done parsing {parser.SourceLineCount} lines({parser.SourceLengthBytes} bytes) in {parseResult.ParseDuration}";
                         rootNode = new FlexibleTraceNode(parseResult.RootTrace) { UiNode = traceBox };
                         TraceViewer.Content = traceBox;
-                        Title = WindowTitle + " - " + (filename.Length>100?"..."+filename.Substring(filename.Length-97,97):filename);
+                        Title = WindowTitle + " - " + filename.Ellipsize(100, true);
                     }
                     catch (Exception ex)
                     {
@@ -113,6 +111,25 @@ namespace XtRay.Windows
             lastOpenFile = filename;
             // Clear the searchBox text when open a new file
             SearchBox.Text = "";
+        }
+
+        private void SetProgress(double value)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (value == 100)
+                {
+                    ParsingProgress.Visibility = Visibility.Collapsed;
+                    TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                }
+                else
+                {
+                    ParsingProgress.Visibility = Visibility.Visible;
+                    ParsingProgress.Value = value;
+                    TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
+                    TaskbarItemInfo.ProgressValue = value / 100;
+                }
+            });
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)

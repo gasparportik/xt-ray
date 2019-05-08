@@ -27,5 +27,23 @@ namespace XtRay.Windows
                 });
             };
         }
+
+        // not sure how this would work in other unicode languages
+        //private const string ELLIPSIS = "\u2026";
+        private const string ELLIPSIS = "...";
+
+        public static string Ellipsize(this string self, int size, bool truncateStart = false)
+        {
+            if (self.Length <= size)
+            {
+                return self;
+            }
+            var offset = size - ELLIPSIS.Length;
+            if (truncateStart)
+            {
+                return ELLIPSIS + self.Substring(self.Length - offset, offset);
+            }
+            return self.Substring(0, offset) + ELLIPSIS;
+        }
     }
 }

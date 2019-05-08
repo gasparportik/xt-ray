@@ -36,37 +36,49 @@ namespace XtRay.ParserLib.Parsers
         private DateTime _parseStart;
         private DateTime _parseEnd;
         private IList<Trace> _list;
+        private uint _processedListItems;
         private Trace _rootTrace;
+
+        private byte _phase = 0;
+        public override double ParsingProgress
+        {
+            get
+            {
+                return (_phase > 0 ? 5 : 1) + (CurrentLine / (double)SourceLineCount) * 85 + (_phase > 2 ? (_processedListItems / (double)_list.Count)*10 : 0);
+            }
+        }
 
         public StreamParser(Stream stream)
         {
             _stream = stream;
+            SourceLengthBytes = (uint)stream.Length;
         }
 
         public override async Task<TraceParseInfo> PreParseAsync(CancellationToken ct = default)
         {
             _stream.Seek(0, SeekOrigin.Begin);
             ParseHeaders();
-            LineCount = CountLines(_stream);
+            SourceLineCount = CountLines(_stream);
             await Task.Delay(1);
             return new TraceParseInfo
             {
                 XdebugVersion = _versionString,
                 TraceFormat = _format,
-                TraceLines = LineCount,
+                TraceLines = SourceLineCount,
                 TraceDate = _date
             };
         }
 
         public override async Task<TraceParseResult> ParseAsync(CancellationToken ct = default)
         {
+            _parseStart = DateTime.Now;
             try
             {
+                _phase = 0;
                 _stream.Seek(0, SeekOrigin.Begin);
                 ParseHeaders();
                 // note that LineCount is not accurate(is higher than the actual count), but that doesn't really matter for its purpose
-                LineCount = CountLines(_stream);
-                _parseStart = DateTime.Now;
+                SourceLineCount = CountLines(_stream);
                 _stream.Seek(0, SeekOrigin.Begin);
                 await ParseData();
             }
@@ -111,7 +123,7 @@ namespace XtRay.ParserLib.Parsers
         private void PostParseActions()
         {
             _rootTrace.TimeEnd = _rootTrace.Children.Sum(x => x.CumulativeTime);
-            if (_version >= VERSION_2_6 && _rootTrace.Children.Length == 1)
+            if (_version >= VERSION_2_6 || _rootTrace.Children.Length == 1)
             {
                 _rootTrace = _rootTrace.Children[0] as Trace;
                 //_rootTrace._parent = null;
@@ -120,6 +132,7 @@ namespace XtRay.ParserLib.Parsers
 
         private async Task ParseLinear()
         {
+            _phase = 1;
             _rootTrace = CreateRootTrace();
             _stack = new Stack<Trace>();
             _stack.Push(_rootTrace);
@@ -142,7 +155,8 @@ namespace XtRay.ParserLib.Parsers
 
         private void ParseParallel()
         {
-            _list = new List<Trace>(new Trace[LineCount]);
+            _phase = 1;
+            _list = new List<Trace>(new Trace[SourceLineCount]);
             _rootTrace = CreateRootTrace();
             var result = Parallel.ForEach(Lines(_stream).Skip(3), new ParallelOptions { MaxDegreeOfParallelism = _maxParallelism }, ProcessLineAsParallel);
             _list = _list.AsParallel().Where(x => x != null).OrderBy(x => x.SourceStartLine).ToList();
@@ -160,8 +174,9 @@ namespace XtRay.ParserLib.Parsers
 
         private void ParseProducerConsumer()
         {
+            _phase = 1;
             const int boundedCapacity = 10000;
-            _list = new List<Trace>(new Trace[LineCount]);
+            _list = new List<Trace>(new Trace[SourceLineCount]);
 
             var blockingCollection = new BlockingCollection<Tuple<int, string>>(boundedCapacity);
             Task.Run(() =>
@@ -207,7 +222,16 @@ namespace XtRay.ParserLib.Parsers
                 CurrentLine++;
                 if (!int.TryParse(parts[1], out var index))
                 {
-                    Console.WriteLine("OOOPPPSSSS!!!!!");
+                    // this is the last line of the trace, should be considered as exit line for all pending trace calls
+                    if (parts.Length == 5 && parts[0] == "" && parts[1] == "" && parts[2] == "")
+                    {
+                        _list[0].SourceEndLine = (uint)lineIndex;
+                        ParseTraceExit(_list[0], parts);
+                    }
+                    else
+                    {
+                        Console.WriteLine("OOOPPPSSSS!!!!!");
+                    }
                     return;
                 }
                 lock (_parallelListLock)
@@ -235,12 +259,6 @@ namespace XtRay.ParserLib.Parsers
                     case "R":
                         ParseTraceReturn(trace, parts);
                         break;
-                    case "":
-                        if (parts[0] == "" && parts[1] == "" && parts[3] != "")
-                        {
-                            ParseTraceExit(_rootTrace, parts);
-                        }
-                        break;
                 }
             }
             catch (IndexOutOfRangeException)
@@ -258,11 +276,21 @@ namespace XtRay.ParserLib.Parsers
 
         private void BuildTreeFromList()
         {
+            _phase = 3;
             _stack = new Stack<Trace>();
             _stack.Push(_rootTrace);
             var level = -1;
+            _processedListItems = 0;
             foreach (var trace in _list)
             {
+                _processedListItems++;
+                if (trace.SourceEndLine == 0)
+                {
+                    var main = _list[0];
+                    trace.SourceEndLine = main.SourceEndLine;
+                    trace.TimeEnd = main.TimeEnd;
+                    trace.MemoryEnd = main.MemoryEnd;
+                }
                 var lastTrace = _stack.Count > 0 ? _stack.Peek() : null;
                 if (trace.Level > level)
                 {
@@ -325,7 +353,7 @@ namespace XtRay.ParserLib.Parsers
                         {
                             var lastTrace = _stack.Pop();
                             _last = lastTrace;
-                            if (lastTrace.CallIndex == uint.Parse(parts[1], CultureInfo.InvariantCulture))
+                            if (lastTrace.CallIndex == index)
                             {
                                 ParseTraceExit(_last, parts);
                                 lastTrace.DoneParsing();
@@ -347,11 +375,15 @@ namespace XtRay.ParserLib.Parsers
                         }
                         break;
                     case "":
-                        while (_stack.Count > 0)
+                        // this is the last line of the trace, it should be considered as the exit for all pending trace calls
+                        if (parts.Length == 5)
                         {
-                            var trace = _stack.Pop();
-                            ParseTraceExit(trace, parts);
-                            trace.DoneParsing();
+                            while (_stack.Count > 0)
+                            {
+                                var trace = _stack.Pop();
+                                ParseTraceExit(trace, parts);
+                                trace.DoneParsing();
+                            }
                         }
                         break;
                 }

@@ -18,10 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XtRay.Console", "XtRay.Cons
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32C718CF-FD2E-469E-9655-4F56F3CB13AC}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XtRay.GtkSharp", "XtRay.GtkSharp\XtRay.GtkSharp.csproj", "{792F50C0-3334-46E7-B24B-FB0997DEF213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XtRay.GtkSharp", "XtRay.GtkSharp\XtRay.GtkSharp.csproj", "{792F50C0-3334-46E7-B24B-FB0997DEF213}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
