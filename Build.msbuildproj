@@ -19,7 +19,7 @@
 
 
   <ItemGroup>
-    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Common\XtRay.Common.csproj"/>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.ParserLib\XtRay.ParserLib.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Windows\XtRay.Windows.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.GtkSharp\XtRay.GtkSharp.csproj"/>
     <ProjectFiles Include="$(MSBuildProjectDirectory)\XtRay.Console\XtRay.Console.csproj"/>

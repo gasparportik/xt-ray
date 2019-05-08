@@ -12,7 +12,7 @@ using System.Windows;
 )]
 [assembly: AssemblyTitle("Xt-Ray")]
 [assembly: AssemblyDescription("An xdebug trace file viewer")]
-[assembly: AssemblyVersion("0.3.0.1")]
+[assembly: AssemblyVersion("0.3.1.1")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("Xt-Ray contributors")]
 
