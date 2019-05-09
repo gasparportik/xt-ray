@@ -1,4 +1,4 @@
-<img src="./content/app-logo.png" alt="project logo" style="max-height: 3em; float:right;" />
+<img src="./content/app-logo.png" alt="project logo" height="35" align="right" style="max-height: 3em; float:right;" />
 
 # Xt-Ray   ![GitHub release](https://img.shields.io/github/release/gasparportik/xt-ray.svg?style=flat-square) ![MPL2 licensed](https://img.shields.io/github/license/gasparportik/xt-ray.svg?style=flat-square)
 > The Xdebug call trace toolkit
